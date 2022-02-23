@@ -29,6 +29,10 @@ except Exception as error:
     print("Connection to DB Failed")
     print("ERROR!!!", error)
 
+@app.get("/homestay")
+def get_homestay():
+    homestays = cursor.execute(""" SELECT * FROM homestay""")
+    return homestays
 
 @app.get("/")
 def home():
