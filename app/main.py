@@ -29,10 +29,23 @@ except Exception as error:
     print("Connection to DB Failed")
     print("ERROR!!!", error)
 
+
 @app.get("/homestay")
 def get_homestay():
-    homestays = cursor.execute(""" SELECT * FROM homestay""")
+    cursor.execute(""" SELECT * FROM homestay """)
+    homestays = cursor.fetchall()
     return homestays
+
+
+@app.post("/homestay")
+def add_homestay(homestay: Homestay):
+    cursor.execute(
+        """ INSERT INTO homestay (name, description) VALUES (%s, %s) RETURNING *""",
+        (homestay.name, homestay.description),
+    )
+    conn.commit()
+    new_homestay = cursor.fetchone()
+    return new_homestay
 
 @app.get("/")
 def home():
