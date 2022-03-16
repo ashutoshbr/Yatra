@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status, Response
 from pydantic import BaseModel
 import psycopg2
 from psycopg2.extras import RealDictCursor  # to show column names
@@ -46,6 +46,23 @@ def add_homestay(homestay: Homestay):
     conn.commit()
     new_homestay = cursor.fetchone()
     return new_homestay
+
+
+@app.delete("/homestay/{id}")
+def delete_homestay(id):
+    cursor.execute(
+        """ DELETE FROM homestay WHERE id=%s RETURNING *""",
+        (str(id)),
+    )
+    deleted_post = cursor.fetchone()
+    conn.commit()
+    if deleted_post == None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Post with {id} does not exist",
+        )
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
 
 @app.get("/")
 def home():
