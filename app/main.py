@@ -48,15 +48,31 @@ def add_homestay(homestay: Homestay):
     return new_homestay
 
 
+@app.put("/homestay/{id}")
+def update_homestay(id: int, homestay: Homestay):
+    cursor.execute(
+        """ UPDATE homestay SET name=%s, description=%s WHERE id=%s RETURNING *""",
+        (homestay.name, homestay.description, str(id)),
+    )
+    updated_homestay = cursor.fetchone()
+    conn.commit()
+    if updated_homestay == None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Post with {id} does not exist",
+        )
+    return updated_homestay
+
+
 @app.delete("/homestay/{id}")
-def delete_homestay(id):
+def delete_homestay(id: int):
     cursor.execute(
         """ DELETE FROM homestay WHERE id=%s RETURNING *""",
         (str(id)),
     )
-    deleted_post = cursor.fetchone()
+    deleted_homestay = cursor.fetchone()
     conn.commit()
-    if deleted_post == None:
+    if deleted_homestay == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Post with {id} does not exist",
