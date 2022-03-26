@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:home_stay/pages/description.dart';
+
 import './favourites.dart';
 import 'package:flutter/material.dart';
 import 'package:home_stay/colors/colors.dart';
@@ -13,6 +15,9 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
+  String homestayname = "Pokhara HomeStay";
+  String address = "Swoyambhu";
+  String city = "Kathmandu";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +59,16 @@ class _MainHomeState extends State<MainHome> {
                         elevation: 10,
                         child: InkWell(
                           onTap: (() {
-                            print('Pressed');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => descriptionPage(
+                                  homestayname: homestayname,
+                                  address: address,
+                                  city: city,
+                                ),
+                              ),
+                            );
                           }),
                           child: Column(
                             children: [
@@ -72,7 +86,7 @@ class _MainHomeState extends State<MainHome> {
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: FittedBox(
-                                      child: Text('Pokhara Royal Homestay',
+                                      child: Text(homestayname,
                                           style: GoogleFonts.lato(
                                               fontSize: 20,
                                               color: Colors.white)),
@@ -109,9 +123,9 @@ class _MainHomeState extends State<MainHome> {
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: FittedBox(
-                                      child: Text('Pokhara',
+                                      child: Text(address + ',' + ' ' + city,
                                           style: GoogleFonts.lato(
-                                            fontSize: 20,
+                                            fontSize: 18,
                                             color: Colors.white,
                                           )),
                                     ),
