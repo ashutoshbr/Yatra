@@ -15,7 +15,7 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
-  String homestayname = "Pokhara HomeStay";
+  String homestayname = "Pokhara Royal Family Homestay";
   String address = "Swoyambhu";
   String city = "Kathmandu";
   @override
