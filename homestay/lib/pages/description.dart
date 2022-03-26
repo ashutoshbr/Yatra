@@ -32,12 +32,19 @@ class _descriptionPageState extends State<descriptionPage> {
   String ownerMail = 'imrich@gmail.com';
   String ownerPhone = '9800000000';
   String ownerTelephone = '01-222222';
-  bool isFavourite = true;
+
+  bool isFavourite = false;
   @override
+  void _toggleFavourite() {
+    setState(() {
+      isFavourite = !isFavourite;
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.homestayname),
+        title: FittedBox(child: Text(widget.homestayname)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -65,14 +72,38 @@ class _descriptionPageState extends State<descriptionPage> {
                   height: (MediaQuery.of(context).size.height -
                           AppBar().preferredSize.height) *
                       0.080,
-                  child: Center(
-                    child: Text(
-                      widget.homestayname,
-                      style: GoogleFonts.lato(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: FittedBox(
+                              child: Text(
+                                widget.homestayname,
+                                style: GoogleFonts.lato(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              _toggleFavourite();
+                            },
+                            icon: isFavourite
+                                ? Icon(
+                                    Icons.favorite,
+                                    color: Colors.white,
+                                  )
+                                : Icon(
+                                    Icons.favorite_border,
+                                    color: Colors.white,
+                                  ),
+                          ),
+                        ]),
                   ),
                 ),
                 //---------------->contains details like address, description etc.<--------------//
@@ -123,25 +154,32 @@ class _descriptionPageState extends State<descriptionPage> {
                           padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
                           child: Text('Included : Breakfast, Lunch, Dinner'),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Add to Favourite'),
-                              IconButton(
-                                  icon: Icon(Icons.favorite,
-                                      color: isFavourite
-                                          ? Colors.blue
-                                          : Theme.of(context).primaryColor),
-                                  onPressed: () {
-                                    setState(() {
-                                      isFavourite = !isFavourite;
-                                    });
-                                  })
-                            ],
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                        //   child: Row(
+                        //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Text('Add to Favourite'),
+
+                        //       //----------------->favourite icon<------------------//
+
+                        //       IconButton(
+                        //         onPressed: () {
+                        //           _toggleFavourite();
+                        //         },
+                        //         icon: isFavourite
+                        //             ? Icon(
+                        //                 Icons.favorite,
+                        //                 color: Theme.of(context).primaryColor,
+                        //               )
+                        //             : Icon(
+                        //                 Icons.favorite_border,
+                        //                 color: Theme.of(context).primaryColor,
+                        //               ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
                           child: Text('Description :'),
@@ -152,6 +190,27 @@ class _descriptionPageState extends State<descriptionPage> {
                             description,
                             style: TextStyle(
                               height: 2,
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: SizedBox(
+                            width: 150,
+                            height: 50,
+                            child: ElevatedButton(
+                              child: Text(
+                                'Reserve',
+                                style: GoogleFonts.lato(fontSize: 20),
+                              ),
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
