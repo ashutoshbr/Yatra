@@ -1,13 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Response
-from ..database import conn, cursor
-from pydantic import BaseModel
+from ..database import cursor
 
 router = APIRouter(prefix="/user", tags=["User"])
-
-
-class User(BaseModel):
-    email: str
-    password: str
 
 
 @router.get("/")
