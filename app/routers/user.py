@@ -12,14 +12,29 @@ def get_user():
     users = cursor.fetchall()
     return users
 
+
 @router.post("/")
-def add_homestay(user: schemas.User):
+def add_user(user: schemas.User):
     hashed_password = utils.hash(user.password)
     user.password = hashed_password
     cursor.execute(
         """ INSERT INTO userinfo (email, password) VALUES (%s, %s) RETURNING *""",
-        (user.email, user.password)
+        (user.email, user.password),
     )
     conn.commit()
     new_user = cursor.fetchone()
     return new_user
+
+
+@router.post("/login")
+def login_user(user: schemas.User):
+    cursor.execute(
+        """ SELECT password FROM userinfo WHERE email=%s """,
+        (user.email,),
+    )
+    db_password = cursor.fetchone()
+
+    if db_password == None or not(utils.verify(user.password, db_password['password'])):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Invalid Credentials')
+
+    return "Login Success"

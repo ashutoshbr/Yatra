@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class Homestay(BaseModel):
@@ -7,5 +7,5 @@ class Homestay(BaseModel):
 
 
 class User(BaseModel):
-    email: str
+    email: EmailStr
     password: str
