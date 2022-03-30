@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, status, Response
+from fastapi import APIRouter, HTTPException, status, Depends
 from ..database import cursor, conn
-from .. import schemas, utils
+from .. import schemas, utils, oauth2
 
 
 router = APIRouter(prefix="/user", tags=["User"])
@@ -13,7 +13,7 @@ def get_user():
     return users
 
 
-@router.post("/")
+@router.post("/", status_code=status.HTTP_201_CREATED)
 def add_user(user: schemas.User):
     hashed_password = utils.hash(user.password)
     user.password = hashed_password
@@ -34,7 +34,12 @@ def login_user(user: schemas.User):
     )
     db_password = cursor.fetchone()
 
-    if db_password == None or not(utils.verify(user.password, db_password['password'])):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Invalid Credentials')
+    if db_password == None or not (
+        utils.verify(user.password, db_password["password"])
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Credentials"
+        )
 
-    return "Login Success"
+    access_token = oauth2.create_access_token(data={"email": user.email})
+    return {"access_token": access_token, "token_type": "bearer"}
