@@ -1,20 +1,3 @@
-class nearDestination {
-  late String destination1;
-  late String destination2;
-  late String destination3;
-  late String destination4;
-  late String destination5;
-
-  nearDestination(
-      destination1, destination2, destination3, destination4, destination5) {
-    this.destination1 = destination1;
-    this.destination2 = destination2;
-    this.destination3 = destination3;
-    this.destination4 = destination4;
-    this.destination5 = destination5;
-  }
-}
-
 class homedata {
   late String homestay_name;
   late String homestay_photo;

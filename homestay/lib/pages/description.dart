@@ -118,31 +118,60 @@ class _descriptionPageState extends State<descriptionPage> {
                                   Icons.location_on,
                                   color: Theme.of(context).primaryColor,
                                 ),
-                                Text(widget.descriptionData.homestay_city +
-                                    ',' +
-                                    ' ' +
-                                    widget.descriptionData.homestay_district),
+                                Text(
+                                  widget.descriptionData.homestay_city +
+                                      ',' +
+                                      ' ' +
+                                      widget.descriptionData.homestay_district,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               ],
                             ),
-                            Text('\$' +
-                                '${widget.descriptionData.price * 1}' '/day'),
+                            Text(
+                              '\$' +
+                                  '${widget.descriptionData.price * 1}' '/day',
+                            ),
                           ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Text('House Type :' +
-                              ' ' +
-                              widget.descriptionData.houseType),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                              child: Text(
+                                'House Type :',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Text(widget.descriptionData.houseType)
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Text('Major Attraction : ' +
-                              widget.descriptionData.nearDestination[1]),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10, 8, 0, 10),
+                              child: Text(
+                                'Cooling Solution : ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              widget.descriptionData.coolingSolution,
+                            )
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Text('Latrine : ' +
-                              widget.descriptionData.latrineType),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                              child: Text(
+                                'Latrine : ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Text(widget.descriptionData.latrineType)
+                          ],
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
@@ -150,7 +179,10 @@ class _descriptionPageState extends State<descriptionPage> {
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Text('Description :'),
+                          child: Text(
+                            'Description :',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 8, 0, 10),
@@ -163,8 +195,37 @@ class _descriptionPageState extends State<descriptionPage> {
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Major Attraction:',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: widget
+                                      .descriptionData.nearDestination.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                                      child: Text('${index + 1 * 1}' +
+                                          '.' +
+                                          ' ' +
+                                          widget.descriptionData
+                                              .nearDestination[index]),
+                                    );
+                                  }),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
                           child: Text(
                             'Contact :',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
                         Padding(
@@ -203,6 +264,12 @@ class _descriptionPageState extends State<descriptionPage> {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Center(
+                            child: Text(
+                                'Note: It\'s just a Reservation not a Booking')),
                         SizedBox(
                           height: 15,
                         ),
