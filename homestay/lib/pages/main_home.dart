@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:home_stay/colors/colors.dart';
 import '../main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../module/homedata.dart';
 
 class MainHome extends StatefulWidget {
   const MainHome({Key? key}) : super(key: key);
@@ -15,9 +16,39 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
-  String homestayname = "Pokhara Royal Family Homestay";
-  String address = "Swoyambhu";
-  String city = "Kathmandu";
+  final List<homedata> homedataList = [
+    homedata(
+        'Local Homestay',
+        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+        'Pokhara',
+        'Kathmandu',
+        false,
+        'that was a great show',
+        'European',
+        10,
+        'Newari',
+        'single bed',
+        'very cold',
+        'cottage',
+        444444,
+        ['Phewa', 'Rara', 'Sarangkot']),
+    homedata(
+      'Europe Homestay very very very very rich very very vry very everyer  verygeryveyrye veyrh',
+      'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+      'Thamel',
+      'Kathmandu',
+      false,
+      'that was a great show',
+      'European',
+      100,
+      'Tharu',
+      'single bed and double bed',
+      'very cold',
+      'Building',
+      4454,
+      ['Phewa', 'Rara' 'Sarangkor'],
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,106 +68,137 @@ class _MainHomeState extends State<MainHome> {
             SizedBox(
               height: (MediaQuery.of(context).size.height -
                       AppBar().preferredSize.height) *
-                  0.063,
+                  0.04,
+            ),
+            SizedBox(
+              width: 300,
+              height: 40,
+              child: ElevatedButton(
+                child: Text(
+                  'Available HomeStays',
+                  style: GoogleFonts.lato(fontSize: 20),
+                ),
+                onPressed: () {},
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: (MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height) *
+                  0.05,
             ),
             Container(
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: 10,
+                  itemCount: homedataList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                         margin: EdgeInsets.fromLTRB(
-                            MediaQuery.of(context).size.width * 0.08,
+                            MediaQuery.of(context).size.width * 0.04,
                             0,
-                            MediaQuery.of(context).size.width * 0.08,
+                            MediaQuery.of(context).size.width * 0.04,
                             (MediaQuery.of(context).size.height -
                                     AppBar().preferredSize.height) *
-                                0.063),
+                                0.05),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        elevation: 10,
+                        elevation: 15,
                         child: InkWell(
                           onTap: (() {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => descriptionPage(
-                                  homestayname: homestayname,
-                                  address: address,
-                                  city: city,
-                                ),
-                              ),
+                                  builder: (context) =>
+                                      descriptionPage(homedataList[index])),
                             );
                           }),
                           child: Column(
                             children: [
-                              // upper homestay holder
+                              // ----------------->image holder<-------------------//
                               Container(
-                                  height: (MediaQuery.of(context).size.height -
-                                          AppBar().preferredSize.height) *
-                                      0.05,
-                                  padding: EdgeInsets.fromLTRB(
-                                      MediaQuery.of(context).size.width * 0.025,
-                                      0,
-                                      0,
-                                      0),
-                                  // color: Color(0xff533e85),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: FittedBox(
-                                      child: Text(homestayname,
-                                          style: GoogleFonts.lato(
-                                              fontSize: 20,
-                                              color: Colors.white)),
+                                height: (MediaQuery.of(context).size.height -
+                                        AppBar().preferredSize.height) *
+                                    0.25,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                      homedataList[index].homestay_photo,
                                     ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff533e85),
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(5),
-                                      topLeft: Radius.circular(5),
-                                    ),
-                                  )),
-                              // image holder
-                              Container(
-                                  height: (MediaQuery.of(context).size.height -
-                                          AppBar().preferredSize.height) *
-                                      0.25,
-                                  width: 350,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                    image: AssetImage('assets/stayimage.png'),
                                     fit: BoxFit.fill,
-                                  ))),
-                              //lower address container
-                              Container(
-                                  padding: EdgeInsets.fromLTRB(
-                                      MediaQuery.of(context).size.width * 0.025,
-                                      0,
-                                      0,
-                                      0),
-                                  height: (MediaQuery.of(context).size.height -
-                                          AppBar().preferredSize.height) *
-                                      0.05,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: FittedBox(
-                                      child: Text(address + ',' + ' ' + city,
-                                          style: GoogleFonts.lato(
-                                            fontSize: 18,
-                                            color: Colors.white,
-                                          )),
-                                    ),
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff533e85),
-                                    borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(5),
-                                      bottomLeft: Radius.circular(5),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(5),
+                                    topLeft: Radius.circular(5),
+                                  ),
+                                ),
+                              ),
+                              // ------------->Homestay name and Addresss<------------------//
+                              Container(
+                                height: (MediaQuery.of(context).size.height -
+                                        AppBar().preferredSize.height) *
+                                    0.1,
+                                padding: EdgeInsets.fromLTRB(
+                                  MediaQuery.of(context).size.width * 0.025,
+                                  MediaQuery.of(context).size.width * 0.015,
+                                  MediaQuery.of(context).size.width * 0.02,
+                                  0,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: FittedBox(
+                                        child: Text(
+                                            homedataList[index].homestay_name,
+                                            style: GoogleFonts.lato(
+                                                fontSize: 20,
+                                                color: Colors.white)),
+                                      ),
                                     ),
-                                  )),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: FittedBox(
+                                        child: Text(
+                                            homedataList[index].homestay_city +
+                                                ',' +
+                                                ' ' +
+                                                homedataList[index]
+                                                    .homestay_district,
+                                            style: GoogleFonts.lato(
+                                                fontSize: 17,
+                                                color: Colors.white)),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: FittedBox(
+                                        child: Text('Click To Learn More',
+                                            style: GoogleFonts.lato(
+                                                fontSize: 10,
+                                                color: Colors.white)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Color(0xff533e85),
+                                  borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(5),
+                                    bottomLeft: Radius.circular(5),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ));

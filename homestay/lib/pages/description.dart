@@ -5,34 +5,19 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_stay/onboarding/homepage.dart';
+import '../module/homedata.dart';
 
 class descriptionPage extends StatefulWidget {
-  late String homestayname;
-  late String address;
-  late String city;
-  descriptionPage(
-      {required this.homestayname, required this.address, required this.city});
+  late homedata descriptionData;
+  descriptionPage(descriptionData) {
+    this.descriptionData = descriptionData;
+  }
 
   @override
   State<descriptionPage> createState() => _descriptionPageState();
 }
 
 class _descriptionPageState extends State<descriptionPage> {
-  String price = '\$ 80/day';
-  String home_type = 'Cottage';
-  List<String> attraction = [
-    'Phew Lake',
-    'Paragliding',
-    'skydiving',
-    'swimming'
-  ];
-  List<String> latrineTpye = ['European', 'Classic'];
-  String description =
-      ' Go imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.';
-  String ownerMail = 'imrich@gmail.com';
-  String ownerPhone = '9800000000';
-  String ownerTelephone = '01-222222';
-
   bool isFavourite = false;
   @override
   void _toggleFavourite() {
@@ -44,7 +29,7 @@ class _descriptionPageState extends State<descriptionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: FittedBox(child: Text(widget.homestayname)),
+        title: FittedBox(child: Text(widget.descriptionData.homestay_name)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -56,7 +41,7 @@ class _descriptionPageState extends State<descriptionPage> {
               // width: MediaQuery.of(context).size.width * 0.3,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/stayimage.png'),
+                  image: NetworkImage(widget.descriptionData.homestay_photo),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -75,16 +60,20 @@ class _descriptionPageState extends State<descriptionPage> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Container(
                             width: MediaQuery.of(context).size.width * 0.7,
-                            child: FittedBox(
-                              child: Text(
-                                widget.homestayname,
-                                style: GoogleFonts.lato(
-                                  color: Colors.white,
-                                  fontSize: 18,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  widget.descriptionData.homestay_name,
+                                  style: GoogleFonts.lato(
+                                    color: Colors.white,
+                                    fontSize: 23,
+                                  ),
                                 ),
                               ),
                             ),
@@ -108,8 +97,6 @@ class _descriptionPageState extends State<descriptionPage> {
                 ),
                 //---------------->contains details like address, description etc.<--------------//
                 Container(
-                  // width: MediaQuery.of(context).size.width * 1,
-                  // height: MediaQuery.of(context).size.height * 0.,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -118,7 +105,7 @@ class _descriptionPageState extends State<descriptionPage> {
                     ),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                    padding: EdgeInsets.fromLTRB(5, 20, 5, 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -131,55 +118,36 @@ class _descriptionPageState extends State<descriptionPage> {
                                   Icons.location_on,
                                   color: Theme.of(context).primaryColor,
                                 ),
-                                Text(widget.address + ',' + ' ' + widget.city),
+                                Text(widget.descriptionData.homestay_city +
+                                    ',' +
+                                    ' ' +
+                                    widget.descriptionData.homestay_district),
                               ],
                             ),
-                            Text(price),
+                            Text('\$' +
+                                '${widget.descriptionData.price * 1}' '/day'),
                           ],
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Text('House Type :' + ' ' + home_type),
+                          child: Text('House Type :' +
+                              ' ' +
+                              widget.descriptionData.houseType),
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Text(
-                              'Major Attraction : phewa lake, sarangkot, paragliding'),
+                          child: Text('Major Attraction : ' +
+                              widget.descriptionData.nearDestination[1]),
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Text('Latrine : ' + latrineTpye.first),
+                          child: Text('Latrine : ' +
+                              widget.descriptionData.latrineType),
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
                           child: Text('Included : Breakfast, Lunch, Dinner'),
                         ),
-                        // Padding(
-                        //   padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                        //   child: Row(
-                        //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       Text('Add to Favourite'),
-
-                        //       //----------------->favourite icon<------------------//
-
-                        //       IconButton(
-                        //         onPressed: () {
-                        //           _toggleFavourite();
-                        //         },
-                        //         icon: isFavourite
-                        //             ? Icon(
-                        //                 Icons.favorite,
-                        //                 color: Theme.of(context).primaryColor,
-                        //               )
-                        //             : Icon(
-                        //                 Icons.favorite_border,
-                        //                 color: Theme.of(context).primaryColor,
-                        //               ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
                           child: Text('Description :'),
@@ -187,11 +155,32 @@ class _descriptionPageState extends State<descriptionPage> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 8, 0, 10),
                           child: Text(
-                            description,
+                            widget.descriptionData.description,
                             style: TextStyle(
                               height: 2,
                             ),
                           ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                          child: Text(
+                            'Contact :',
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                          child: Text('Email : ' + 'owner@gmail.com'),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                          child: Text('Phone : ' + '984111111'),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                          child: Text('Telephone : ' + '01-83393993'),
+                        ),
+                        SizedBox(
+                          height: 15,
                         ),
                         Center(
                           child: SizedBox(
@@ -214,23 +203,8 @@ class _descriptionPageState extends State<descriptionPage> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Text(
-                            'Contact :',
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Text('Email : ' + ownerMail),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Text('Phone : ' + ownerPhone),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          child: Text('Telephone : ' + ownerTelephone),
+                        SizedBox(
+                          height: 15,
                         ),
                       ],
                     ),
