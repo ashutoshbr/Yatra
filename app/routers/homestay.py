@@ -1,13 +1,8 @@
 from fastapi import APIRouter, HTTPException, status, Response
 from ..database import conn, cursor
-from pydantic import BaseModel
+from .. import schemas
 
 router = APIRouter(prefix="/homestay", tags=["Homestay"])
-
-
-class Homestay(BaseModel):
-    name: str
-    description: str
 
 
 @router.get("/")
@@ -18,7 +13,7 @@ def get_homestay():
 
 
 @router.post("/")
-def add_homestay(homestay: Homestay):
+def add_homestay(homestay: schemas.Homestay):
     cursor.execute(
         """ INSERT INTO homestay (name, description) VALUES (%s, %s) RETURNING *""",
         (homestay.name, homestay.description),
@@ -29,7 +24,7 @@ def add_homestay(homestay: Homestay):
 
 
 @router.put("/{id}")
-def update_homestay(id: int, homestay: Homestay):
+def update_homestay(id: int, homestay: schemas.Homestay):
     cursor.execute(
         """ UPDATE homestay SET name=%s, description=%s WHERE id=%s RETURNING *""",
         (homestay.name, homestay.description, str(id)),
