@@ -1,11 +1,14 @@
-from fastapi import APIRouter, HTTPException, status, Response
-from ..database import conn, cursor
+from typing import List
+
+from fastapi import APIRouter, HTTPException, Response, status
+
 from .. import schemas
+from ..database import conn, cursor
 
 router = APIRouter(prefix="/homestay", tags=["Homestay"])
 
 
-@router.get("/")
+@router.get("/", response_model=List[schemas.Homestay])
 def get_homestay():
     cursor.execute(""" SELECT * FROM homestay """)
     homestays = cursor.fetchall()
