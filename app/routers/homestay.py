@@ -8,7 +8,7 @@ from ..database import conn, cursor
 router = APIRouter(prefix="/homestay", tags=["Homestay"])
 
 
-@router.get("/", response_model=List[schemas.Homestay])
+@router.get("/", response_model=List[schemas.GetHomestay])
 def get_homestay():
     cursor.execute(""" SELECT * FROM homestay """)
     homestays = cursor.fetchall()
@@ -16,18 +16,26 @@ def get_homestay():
 
 
 @router.post("/")
-def add_homestay(homestay: schemas.Homestay):
+def add_homestay(
+    homestay: schemas.PostHomestay,
+    user_email: str = Depends(oauth2.verify_access_token),
+):
     cursor.execute(
         """ INSERT INTO homestay (name, description) VALUES (%s, %s) RETURNING *""",
         (homestay.name, homestay.description),
     )
     conn.commit()
     new_homestay = cursor.fetchone()
+    print(user_email)
     return new_homestay
 
 
 @router.put("/{id}")
-def update_homestay(id: int, homestay: schemas.Homestay):
+def update_homestay(
+    id: int,
+    homestay: schemas.PostHomestay,
+    user_email: str = Depends(oauth2.verify_access_token),
+):
     cursor.execute(
         """ UPDATE homestay SET name=%s, description=%s WHERE id=%s RETURNING *""",
         (homestay.name, homestay.description, str(id)),
@@ -39,11 +47,12 @@ def update_homestay(id: int, homestay: schemas.Homestay):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Post with {id} does not exist",
         )
+    print(user_email)
     return updated_homestay
 
 
 @router.delete("/{id}")
-def delete_homestay(id: int):
+def delete_homestay(id: int, user_email: str = Depends(oauth2.verify_access_token)):
     cursor.execute(
         """ DELETE FROM homestay WHERE id=%s RETURNING *""",
         (str(id)),
@@ -55,4 +64,5 @@ def delete_homestay(id: int):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Post with {id} does not exist",
         )
+    print(user_email)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -10,9 +10,10 @@ router = APIRouter(prefix="/user", tags=["User"])
 
 
 @router.get("/", response_model=List[schemas.User])
-def get_users():
+def get_users(user_email: str = Depends(oauth2.verify_access_token)):
     cursor.execute(""" SELECT * FROM userinfo """)
     users = cursor.fetchall()
+    print(user_email)
     return users
 
 
