@@ -1,4 +1,4 @@
-from datetime import time
+from datetime import date, time
 
 from pydantic import BaseModel, EmailStr
 
@@ -20,5 +20,15 @@ class Homestay(BaseModel):
 
 
 class User(BaseModel):
+    id: int
+    email: str
+    country: str | None
+    phone: str | None
+    dob: date | None
+    fname: str | None
+    lname: str | None
+
+
+class LoginUser(BaseModel):
     email: EmailStr
     password: str

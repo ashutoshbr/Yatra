@@ -1,12 +1,14 @@
-from fastapi import APIRouter, HTTPException, status, Depends
-from ..database import cursor, conn
-from .. import schemas, utils, oauth2
+from typing import List
 
+from fastapi import APIRouter, Depends, HTTPException, status
+
+from .. import oauth2, schemas, utils
+from ..database import conn, cursor
 
 router = APIRouter(prefix="/user", tags=["User"])
 
 
-@router.get("/")
+@router.get("/", response_model=List[schemas.User])
 def get_user():
     cursor.execute(""" SELECT * FROM userinfo """)
     users = cursor.fetchall()
@@ -14,7 +16,7 @@ def get_user():
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-def add_user(user: schemas.User):
+def add_user(user: schemas.LoginUser):
     hashed_password = utils.hash(user.password)
     user.password = hashed_password
     cursor.execute(
@@ -27,7 +29,7 @@ def add_user(user: schemas.User):
 
 
 @router.post("/login")
-def login_user(user: schemas.User):
+def login_user(user: schemas.LoginUser):
     cursor.execute(
         """ SELECT password FROM userinfo WHERE email=%s """,
         (user.email,),
