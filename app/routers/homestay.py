@@ -1,8 +1,8 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 
-from .. import schemas
+from .. import oauth2, schemas
 from ..database import conn, cursor
 
 router = APIRouter(prefix="/homestay", tags=["Homestay"])
