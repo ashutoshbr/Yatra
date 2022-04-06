@@ -51,3 +51,7 @@ class LoginUser(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+class AddFavourite(BaseModel):
+    homestay_id: int

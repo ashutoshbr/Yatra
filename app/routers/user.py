@@ -55,3 +55,36 @@ def login_user(user_credentials: OAuth2PasswordRequestForm = Depends()):
 
     access_token = oauth2.create_access_token(data={"email": user_credentials.username})
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.get("/favourite")
+def get_favourite(user_email: str = Depends(oauth2.verify_access_token)):
+    cursor.execute(""" SELECT homestay_id FROM favourite """)
+    favourites = cursor.fetchall()
+    print(user_email)
+    return favourites
+
+
+@router.post("/favourite")
+def add_favourite(
+    favourite: schemas.AddFavourite,
+    user_email: str = Depends(oauth2.verify_access_token),
+):
+    try:
+        cursor.execute(""" SELECT id FROM userinfo WHERE email=%s""", (user_email,)),
+        user_id = cursor.fetchone()
+        cursor.execute(
+            """ INSERT INTO favourite (user_id, homestay_id) VALUES (%s, %s) RETURNING *""",
+            (user_id["id"], favourite.homestay_id),
+        )
+        new_favourite = cursor.fetchone()
+        conn.commit()
+        print(user_email, user_id["id"])
+    except:
+        cursor.execute("""ROLLBACK;""")
+        conn.commit()
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Invalid action",
+        )
+    return new_favourite
