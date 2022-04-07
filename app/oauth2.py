@@ -1,10 +1,14 @@
-from jose import jwt, JWTError
-from datetime import datetime, timedelta
-from dotenv import load_dotenv
 import os
+from datetime import datetime, timedelta
+
+from dotenv import load_dotenv
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
 
 load_dotenv()
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 SECRET_KEY = f"{os.environ['SECRET_KEY']}"
 ALGORITHM = "HS256"
@@ -22,7 +26,12 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 
-def verify_access_token(token: str, credentails_exception):
+def verify_access_token(token: str = Depends(oauth2_scheme)):
+    credentails_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("email")
