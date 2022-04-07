@@ -31,7 +31,18 @@ class _MainHomeState extends State<MainHome> {
         'Ice Powered Cooler',
         'cottage',
         444444,
-        ['Phewa', 'Rara', 'Sarangkot']),
+        ['Phewa', 'Rara', 'Sarangkot'],
+        15,
+        [
+          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+          'https://st.depositphotos.com/2851435/3984/i/600/depositphotos_39844179-stock-photo-modern-interior-bedroom.jpg'
+        ]),
     homedata(
       'Europe Homestay',
       'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
@@ -47,6 +58,11 @@ class _MainHomeState extends State<MainHome> {
       'Building',
       4454,
       ['Phewa', 'Rara' 'Sarangkor'],
+      10,
+      [
+        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'
+      ],
     ),
   ];
   @override
