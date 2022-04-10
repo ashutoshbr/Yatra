@@ -13,6 +13,8 @@ class homedata {
   late String houseType;
   late num id;
   late List<String> nearDestination;
+  late num no_of_available_rooms;
+  late List<String> photo_collection;
 
   homedata(
       homestay_name,
@@ -28,7 +30,9 @@ class homedata {
       coolingSolution,
       houseType,
       id,
-      nearDestination) {
+      nearDestination,
+      no_of_available_rooms,
+      photo_collection) {
     this.homestay_name = homestay_name;
     this.homestay_photo = homestay_photo;
     this.homestay_city = homestay_city;
@@ -43,5 +47,7 @@ class homedata {
     this.houseType = houseType;
     this.id = id;
     this.nearDestination = nearDestination;
+    this.no_of_available_rooms = no_of_available_rooms;
+    this.photo_collection = photo_collection;
   }
 }

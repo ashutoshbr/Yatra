@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import './signup.dart';
 import '../main.dart';
+import 'package:geolocator/geolocator.dart';
 
 class logIn extends StatefulWidget {
   const logIn({Key? key}) : super(key: key);
@@ -17,6 +18,20 @@ class _logInState extends State<logIn> {
   bool isPasswordVisible = false;
   int borderRadius = 10;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  // void getCurrentPosition() async {
+  //   LocationPermission permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied ||
+  //       permission == LocationPermission.deniedForever) {
+  //     print("Permission not given");
+  //     LocationPermission ask = await Geolocator.requestPermission();
+  //   } else {
+  //     Position currentPosition = await Geolocator.getCurrentPosition(
+  //         desiredAccuracy: LocationAccuracy.best);
+  //     print('Latitude: ' + currentPosition.latitude.toString());
+  //     print('Longitude: ' + currentPosition.longitude.toString());
+  //   }
+  // }
+
   @override
   void dispose() {
     emailController.dispose();
@@ -206,18 +221,19 @@ one uupercase letter and one digit ''';
                     style: GoogleFonts.lato(),
                   ),
                   onPressed: () {
-                    if (_key.currentState!.validate()) {
-                      _key.currentState!.save();
-                      print(emailController.text);
-                      print(passwordController.text);
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyHomePage(),
-                        ),
-                        (Route<dynamic> route) => false,
-                      );
-                    }
+                    // getCurrentPosition();
+                    // if (_key.currentState!.validate()) {
+                    //   _key.currentState!.save();
+                    print(emailController.text);
+                    print(passwordController.text);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyHomePage(),
+                      ),
+                      (Route<dynamic> route) => false,
+                    );
+                    // }
                   },
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(

@@ -5,9 +5,14 @@ import '../onboarding/homepage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../colors/colors.dart';
 
-class OnBoardingPage extends StatelessWidget {
+class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
 
+  @override
+  State<OnBoardingPage> createState() => _OnBoardingPageState();
+}
+
+class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
