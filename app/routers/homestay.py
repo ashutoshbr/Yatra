@@ -50,7 +50,20 @@ def update_homestay(
 ):
     cursor.execute(
         """ UPDATE homestay SET name=%s, description=%s, location=%s, price=%s, website=%s, image_url=%s, culture_type=%s, toilet_type=%s, bed_type=%s, cooling_soln=%s, house_type=%s WHERE id=%s RETURNING *""",
-        (homestay.name, homestay.description, str(id)),
+        (
+            homestay.name,
+            homestay.description,
+            homestay.location,
+            homestay.price,
+            homestay.website,
+            homestay.image_url,
+            homestay.culture_type,
+            homestay.toilet_type,
+            homestay.bed_type,
+            homestay.cooling_soln,
+            homestay.house_type,
+            str(id),
+        ),
     )
     updated_homestay = cursor.fetchone()
     conn.commit()
