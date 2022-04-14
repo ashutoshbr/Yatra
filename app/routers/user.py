@@ -18,13 +18,21 @@ def get_users(user_email: str = Depends(oauth2.verify_access_token)):
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-def add_user(user: schemas.LoginUser):
+def add_user(user: schemas.AddUser):
     hashed_password = utils.hash(user.password)
     user.password = hashed_password
     try:
         cursor.execute(
-            """ INSERT INTO userinfo (email, password) VALUES (%s, %s) RETURNING *""",
-            (user.email, user.password),
+            """ INSERT INTO userinfo (email, password, country, phone, dob, fname, lname) VALUES (%s, %s,%s, %s,%s, %s, %s) RETURNING *""",
+            (
+                user.email,
+                user.password,
+                user.country,
+                user.phone,
+                user.dob,
+                user.fname,
+                user.lname,
+            ),
         )
         conn.commit()
         new_user = cursor.fetchone()
