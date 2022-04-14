@@ -21,8 +21,20 @@ def add_homestay(
     user_email: str = Depends(oauth2.verify_access_token),
 ):
     cursor.execute(
-        """ INSERT INTO homestay (name, description) VALUES (%s, %s) RETURNING *""",
-        (homestay.name, homestay.description),
+        """ INSERT INTO homestay (name, description, location, price, website, image_url, culture_type, toilet_type, bed_type, cooling_soln, house_type) VALUES (%s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s) RETURNING *""",
+        (
+            homestay.name,
+            homestay.description,
+            homestay.location,
+            homestay.price,
+            homestay.website,
+            homestay.image_url,
+            homestay.culture_type,
+            homestay.toilet_type,
+            homestay.bed_type,
+            homestay.cooling_soln,
+            homestay.house_type,
+        ),
     )
     conn.commit()
     new_homestay = cursor.fetchone()
