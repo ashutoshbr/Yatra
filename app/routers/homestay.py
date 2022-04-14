@@ -49,7 +49,7 @@ def update_homestay(
     user_email: str = Depends(oauth2.verify_access_token),
 ):
     cursor.execute(
-        """ UPDATE homestay SET name=%s, description=%s WHERE id=%s RETURNING *""",
+        """ UPDATE homestay SET name=%s, description=%s, location=%s, price=%s, website=%s, image_url=%s, culture_type=%s, toilet_type=%s, bed_type=%s, cooling_soln=%s, house_type=%s WHERE id=%s RETURNING *""",
         (homestay.name, homestay.description, str(id)),
     )
     updated_homestay = cursor.fetchone()
