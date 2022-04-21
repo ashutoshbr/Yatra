@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:home_stay/pages/description.dart';
-
+import 'package:http/http.dart' as http;
 import './favourites.dart';
 import 'package:flutter/material.dart';
 import 'package:home_stay/colors/colors.dart';
@@ -10,61 +11,28 @@ import '../module/homedata.dart';
 
 class MainHome extends StatefulWidget {
   const MainHome({Key? key}) : super(key: key);
-
   @override
   _MainHomeState createState() => _MainHomeState();
 }
 
 class _MainHomeState extends State<MainHome> {
-  final List<homedata> homedataList = [
-    homedata(
-        'Local Homestay',
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-        'Pokhara',
-        'Kathmandu',
-        false,
-        'that was a great show',
-        'European',
-        10,
-        'Newari',
-        'single bed',
-        'Ice Powered Cooler',
-        'cottage',
-        444444,
-        ['Phewa', 'Rara', 'Sarangkot'],
-        15,
-        [
-          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-          'https://st.depositphotos.com/2851435/3984/i/600/depositphotos_39844179-stock-photo-modern-interior-bedroom.jpg'
-        ]),
-    homedata(
-      'Europe Homestay',
-      'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-      'Thamel',
-      'Kathmandu',
-      false,
-      'that was a great show',
-      'European',
-      100,
-      'Tharu',
-      'single bed and double bed',
-      'AC',
-      'Building',
-      4454,
-      ['Phewa', 'Rara' 'Sarangkor'],
-      10,
-      [
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'
-      ],
-    ),
-  ];
+  
+  Future getHomestayData() async {
+    var response = await http.get(Uri.http('10.0.2.2:8000', 'homestay'));
+    var jsonData = jsonDecode(response.body);
+
+    List<homedata> homedataList = [];
+    for (var h in jsonData) {
+      homedata H = homedata(h['id'], h['name'], h['image_url'], h['location'], h['created_at'], h['description'], h['toilet_type'], h['price'], h['culture_type'], h['bed_type'], h['cooling_soln'], h['house_type'], h['website'], h['near_dest'], h['no_of_available_rooms']);
+
+      homedataList.add(H);
+    }
+    print(homedataList.length);
+    return homedataList;
+  }
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +62,9 @@ class _MainHomeState extends State<MainHome> {
                   'Available HomeStays',
                   style: GoogleFonts.lato(fontSize: 20),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  getHomestayData();
+                },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
@@ -110,7 +80,15 @@ class _MainHomeState extends State<MainHome> {
                   0.05,
             ),
             Container(
-              child: ListView.builder(
+              child: FutureBuilder (
+                future: getHomestayData(),
+                builder: (context, snapshot){
+                  if(snapshot.hasError) {
+                    return Text("${snapshot.error}");
+                  }
+                  else if(snapshot.hasData) {
+                    var homedataList = snapshot.data as List<homedata>;
+                    return ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: homedataList.length,
@@ -146,7 +124,7 @@ class _MainHomeState extends State<MainHome> {
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: NetworkImage(
-                                      homedataList[index].homestay_photo,
+                                      homedataList[index].image_url,
                                     ),
                                     fit: BoxFit.fill,
                                   ),
@@ -186,11 +164,7 @@ class _MainHomeState extends State<MainHome> {
                                       alignment: Alignment.centerLeft,
                                       child: FittedBox(
                                         child: Text(
-                                            homedataList[index].homestay_city +
-                                                ',' +
-                                                ' ' +
-                                                homedataList[index]
-                                                    .homestay_district,
+                                            homedataList[index].location,
                                             style: GoogleFonts.lato(
                                                 fontSize: 17,
                                                 color: Colors.white)),
@@ -218,7 +192,13 @@ class _MainHomeState extends State<MainHome> {
                             ],
                           ),
                         ));
-                  }),
+                  });
+                  }
+                  else {
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                },
+              )
             ),
           ],
         ),

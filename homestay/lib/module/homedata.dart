@@ -1,53 +1,52 @@
 class homedata {
+  late int id;
   late String homestay_name;
-  late String homestay_photo;
-  late String homestay_city;
-  late String homestay_district;
-  bool isFav = false;
+  late String image_url;
+  late String location;
+  late String created_at;
   late String description;
-  late String latrineType;
-  late num price;
-  late String cultureType;
-  late String bedType;
-  late String coolingSolution;
-  late String houseType;
-  late num id;
-  late List<String> nearDestination;
-  late num no_of_available_rooms;
-  late List<String> photo_collection;
+  late String toilet_type;
+  late int price;
+  late String culture_type;
+  late String bed_type;
+  late String cooling_soln;
+  late String house_type;
+  late String website;
+  late String near_destinations;
+  late int no_of_available_rooms;
+  
 
   homedata(
-      homestay_name,
-      homestay_photo,
-      homestay_city,
-      homestay_district,
-      isFav,
-      description,
-      latrineType,
-      price,
-      cultureType,
-      bedType,
-      coolingSolution,
-      houseType,
       id,
-      nearDestination,
-      no_of_available_rooms,
-      photo_collection) {
-    this.homestay_name = homestay_name;
-    this.homestay_photo = homestay_photo;
-    this.homestay_city = homestay_city;
-    this.homestay_district = homestay_district;
-    this.isFav = isFav;
-    this.description = description;
-    this.latrineType = latrineType;
-    this.price = price;
-    this.cultureType = cultureType;
-    this.bedType = bedType;
-    this.coolingSolution = coolingSolution;
-    this.houseType = houseType;
+      homestay_name,
+      image_url,
+      location,
+      created_at,
+      description,
+      toilet_type,
+      price,
+      culture_type,
+      bed_type,
+      cooling_soln,
+      house_type,
+      website,
+      near_destinations,
+      no_of_available_rooms
+      ) {
     this.id = id;
-    this.nearDestination = nearDestination;
+    this.homestay_name = homestay_name;
+    this.image_url = image_url;
+    this.location = location;
+    this.created_at = created_at;
+    this.description = description;
+    this.toilet_type = toilet_type;
+    this.price = price;
+    this.culture_type = culture_type;
+    this.bed_type = bed_type;
+    this.cooling_soln = cooling_soln;
+    this.house_type = house_type;
+    this.website = website;
+    this.near_destinations = near_destinations;
     this.no_of_available_rooms = no_of_available_rooms;
-    this.photo_collection = photo_collection;
   }
 }

@@ -4,27 +4,39 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 
 from .. import oauth2, schemas, utils
+from ..schemas import SignupUser
 from ..database import conn, cursor
+import json
 
 router = APIRouter(prefix="/user", tags=["User"])
 
 
 @router.get("/", response_model=List[schemas.User])
-def get_users(user_email: str = Depends(oauth2.verify_access_token)):
+def get_users():
+    print("hell")
     cursor.execute(""" SELECT * FROM userinfo """)
     users = cursor.fetchall()
-    print(user_email)
+    # print(user_email)
     return users
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
-def add_user(user: schemas.LoginUser):
-    hashed_password = utils.hash(user.password)
-    user.password = hashed_password
+@router.post("/")
+def add_user(jsonUser):
+    print("hell")
+    j = json.loads(jsonUser)
+    email = j["email"]
+    password = j["password"]
+    country = j["country"]
+    fullname = j["fullname"]
+    username = j["username"]
+    print(username)
+    user1 = SignupUser(email, password, country, fullname, username)
+    hashed_password = utils.hash(user1.password)
+    user1.password = hashed_password
     try:
         cursor.execute(
-            """ INSERT INTO userinfo (email, password) VALUES (%s, %s) RETURNING *""",
-            (user.email, user.password),
+            """ INSERT INTO userinfo (email, password, country, full_name, username) VALUES (%s, %s, %s, %s, %s) RETURNING *""",
+            (user1.email, user1.password, user1.country, user1.full_name , user1.username),
         )
         conn.commit()
         new_user = cursor.fetchone()
@@ -39,10 +51,10 @@ def add_user(user: schemas.LoginUser):
 
 
 @router.post("/login", response_model=schemas.Token)
-def login_user(user_credentials: OAuth2PasswordRequestForm = Depends()):
+def login_user(user_credentials: schemas.LoginUser):
     cursor.execute(
-        """ SELECT password FROM userinfo WHERE email=%s """,
-        (user_credentials.username,),
+        """ SELECT password FROM userinfo WHERE email= %s """,
+        (user_credentials.email,),
     )
     db_password = cursor.fetchone()
 
@@ -53,7 +65,7 @@ def login_user(user_credentials: OAuth2PasswordRequestForm = Depends()):
             status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Credentials"
         )
 
-    access_token = oauth2.create_access_token(data={"email": user_credentials.username})
+    access_token = oauth2.create_access_token(data={"email": user_credentials.email})
     return {"access_token": access_token, "token_type": "bearer"}
 
 

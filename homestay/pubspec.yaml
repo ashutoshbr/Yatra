@@ -31,6 +31,7 @@ dependencies:
     sdk: flutter
   flutter_svg: ^1.0.3
   introduction_screen: ^3.0.0
+  http: ^0.13.4
   
 
 

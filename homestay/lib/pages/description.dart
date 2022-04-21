@@ -43,7 +43,7 @@ class _descriptionPageState extends State<descriptionPage> {
               // width: MediaQuery.of(context).size.width * 0.3,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(widget.descriptionData.homestay_photo),
+                  image: NetworkImage(widget.descriptionData.image_url),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -124,11 +124,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   Text(
-                                    widget.descriptionData.homestay_city +
-                                        ',' +
-                                        ' ' +
-                                        widget
-                                            .descriptionData.homestay_district,
+                                    widget.descriptionData.location,
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
@@ -136,7 +132,7 @@ class _descriptionPageState extends State<descriptionPage> {
                               ),
                               Text(
                                 '\$' +
-                                    '${widget.descriptionData.price * 1}'
+                                    '${widget.descriptionData.price}'
                                         '/day',
                               ),
                             ],
@@ -150,7 +146,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              Text(widget.descriptionData.houseType)
+                              Text(widget.descriptionData.house_type)
                             ],
                           ),
                           Row(
@@ -165,7 +161,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                 ),
                               ),
                               Text(
-                                widget.descriptionData.coolingSolution,
+                                widget.descriptionData.cooling_soln,
                               )
                             ],
                           ),
@@ -178,7 +174,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              Text(widget.descriptionData.latrineType)
+                              Text(widget.descriptionData.toilet_type)
                             ],
                           ),
                           Padding(
@@ -215,7 +211,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: widget
-                                        .descriptionData.nearDestination.length,
+                                        .descriptionData.near_destinations.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       return Padding(
@@ -225,7 +221,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                             '.' +
                                             ' ' +
                                             widget.descriptionData
-                                                .nearDestination[index]),
+                                                .near_destinations),
                                       );
                                     }),
                               ],
@@ -237,11 +233,6 @@ class _descriptionPageState extends State<descriptionPage> {
                               'HomeStay Images :',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: gridLayout(
-                                widget.descriptionData.photo_collection),
                           ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 10, 5, 10),

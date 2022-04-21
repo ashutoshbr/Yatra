@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import './signup.dart';
 import '../main.dart';
@@ -13,24 +16,12 @@ class logIn extends StatefulWidget {
 }
 
 class _logInState extends State<logIn> {
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isPasswordVisible = false;
   int borderRadius = 10;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  // void getCurrentPosition() async {
-  //   LocationPermission permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied ||
-  //       permission == LocationPermission.deniedForever) {
-  //     print("Permission not given");
-  //     LocationPermission ask = await Geolocator.requestPermission();
-  //   } else {
-  //     Position currentPosition = await Geolocator.getCurrentPosition(
-  //         desiredAccuracy: LocationAccuracy.best);
-  //     print('Latitude: ' + currentPosition.latitude.toString());
-  //     print('Longitude: ' + currentPosition.longitude.toString());
-  //   }
-  // }
 
   @override
   void dispose() {
@@ -221,11 +212,9 @@ one uupercase letter and one digit ''';
                     style: GoogleFonts.lato(),
                   ),
                   onPressed: () {
-                    // getCurrentPosition();
-                    // if (_key.currentState!.validate()) {
-                    //   _key.currentState!.save();
                     print(emailController.text);
                     print(passwordController.text);
+                    
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
@@ -272,12 +261,12 @@ one uupercase letter and one digit ''';
                 child: Row(
                   children: <Widget>[
                     Text(
-                      'Does not have an account?',
+                      'No account yet?',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     TextButton(
                       child: Text(
-                        'Sign in',
+                        'Sign up',
                         style: GoogleFonts.lato(
                           color: Color(0xff533e85),
                           decoration: TextDecoration.underline,

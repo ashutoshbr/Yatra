@@ -1,4 +1,5 @@
 from datetime import date, time
+from typing import List
 
 from pydantic import BaseModel, EmailStr
 
@@ -9,7 +10,7 @@ class GetHomestay(BaseModel):
     description: str
     created_at: time
     location: str
-    price: float
+    price: int
     website: str | None
     image_url: str | None
     culture_type: str | None
@@ -17,6 +18,9 @@ class GetHomestay(BaseModel):
     bed_type: str | None
     cooling_soln: str | None
     house_type: str | None
+    no_of_available_rooms: int | None
+    near_dest: str | None
+    
 
 
 class PostHomestay(BaseModel):
@@ -31,21 +35,35 @@ class PostHomestay(BaseModel):
     bed_type: str | None
     cooling_soln: str | None
     house_type: str | None
+    no_of_available_rooms: int | None
+    near_dest: str | None
 
 
 class User(BaseModel):
     id: int
     email: str
     country: str | None
-    phone: str | None
-    dob: date | None
-    fname: str | None
-    lname: str | None
+    full_name: str
+    username: str
 
 
 class LoginUser(BaseModel):
     email: EmailStr
     password: str
+
+class SignupUser():
+    email: EmailStr
+    password: str
+    country: str | None
+    full_name: str
+    username: str
+    
+    def __init__(self, email, password, country, full_name, username):
+        self.email = email
+        self.password = password
+        self.country = country
+        self.full_name = full_name
+        self.username = username
 
 
 class Token(BaseModel):
