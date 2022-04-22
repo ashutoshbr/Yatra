@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
+
 import './signup.dart';
 import '../main.dart';
-import 'package:geolocator/geolocator.dart';
+import '../module/logindetails.dart';
 
 class logIn extends StatefulWidget {
   const logIn({Key? key}) : super(key: key);
@@ -16,6 +17,16 @@ class logIn extends StatefulWidget {
 }
 
 class _logInState extends State<logIn> {
+  Future postLogindata(Logindetails user) async {
+    String jsonUser = jsonEncode(user);
+    print('tori' + jsonUser);
+    var response =
+        await Dio().post('http://10.0.2.2:8000/user/login', data: jsonUser);
+    print(response);
+    print(response.statusCode);
+    print(response.statusMessage);
+    print(response.headers);
+  }
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -212,9 +223,13 @@ one uupercase letter and one digit ''';
                     style: GoogleFonts.lato(),
                   ),
                   onPressed: () {
+                    Logindetails user1 = Logindetails(
+                        email: emailController.text,
+                        password: passwordController.text);
+                    postLogindata(user1);
                     print(emailController.text);
                     print(passwordController.text);
-                    
+
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

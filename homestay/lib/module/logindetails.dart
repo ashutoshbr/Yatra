@@ -1,9 +1,11 @@
-class logindetails {
-  late String usermail;
-  late String password;
+class Logindetails {
+  final String email;
+  final String password;
 
-  logindetails(usermail, password) {
-    this.usermail = usermail;
-    this.password = password;
-  }
+  Logindetails({required this.email, required this.password});
+
+  Map toJson() => {
+        'email': email,
+        'password': password,
+      };
 }
