@@ -19,6 +19,12 @@ class GetHomestay(BaseModel):
     house_type: str | None
     no_of_available_rooms: int | None
     near_dest: str | None
+    owner_name: str | None
+    owner_phone: str | None
+    owner_email: str | None
+    image1: str | None
+    image2: str | None
+    image3: str | None
 
 
 class PostHomestay(BaseModel):
@@ -35,6 +41,12 @@ class PostHomestay(BaseModel):
     house_type: str | None
     no_of_available_rooms: int | None
     near_dest: str | None
+    owner_name: str | None
+    owner_phone: str | None
+    owner_email: str | None
+    image1: str | None
+    image2: str | None
+    image3: str | None
 
 
 class User(BaseModel):
