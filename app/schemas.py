@@ -41,7 +41,7 @@ class User(BaseModel):
     id: int
     email: str
     country: str | None
-    full_name: str
+    fullname: str
     username: str
 
 

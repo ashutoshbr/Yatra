@@ -12,10 +12,8 @@ router = APIRouter(prefix="/user", tags=["User"])
 
 @router.get("/", response_model=List[schemas.User])
 def get_users():
-    print("hell")
     cursor.execute(""" SELECT * FROM userinfo """)
     users = cursor.fetchall()
-    # print(user_email)
     return users
 
 
