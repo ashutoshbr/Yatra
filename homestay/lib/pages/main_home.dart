@@ -23,7 +23,7 @@ class _MainHomeState extends State<MainHome> {
 
     List<homedata> homedataList = [];
     for (var h in jsonData) {
-      homedata H = homedata(h['id'], h['name'], h['image_url'], h['location'], h['created_at'], h['description'], h['toilet_type'], h['price'], h['culture_type'], h['bed_type'], h['cooling_soln'], h['house_type'], h['website'], h['near_dest'], h['no_of_available_rooms']);
+      homedata H = homedata(h['id'], h['name'], h['image_url'], h['location'], h['created_at'], h['description'], h['toilet_type'], h['price'], h['culture_type'], h['bed_type'], h['cooling_soln'], h['house_type'], h['website'], h['near_dest'], h['no_of_available_rooms'], h['owner_name'], h['owner_phone'], h['owner_email'], h['image1'], h['image2'], h['image3']);
 
       homedataList.add(H);
     }

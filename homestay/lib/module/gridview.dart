@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class gridLayout extends StatefulWidget {
+ 
   late List<String> photo_collection;
   gridLayout(photo_collection) {
     this.photo_collection = photo_collection;

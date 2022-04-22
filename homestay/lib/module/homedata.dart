@@ -14,6 +14,12 @@ class homedata {
   late String website;
   late String near_destinations;
   late int no_of_available_rooms;
+  late String owner_name;
+  late String owner_phone;
+  late String owner_email;
+  late String image1;
+  late String image2;
+  late String image3;
   
 
   homedata(
@@ -31,7 +37,13 @@ class homedata {
       house_type,
       website,
       near_destinations,
-      no_of_available_rooms
+      no_of_available_rooms,
+      owner_name,
+      owner_phone,
+      owner_email,
+      image1,
+      image2,
+      image3
       ) {
     this.id = id;
     this.homestay_name = homestay_name;
@@ -48,5 +60,11 @@ class homedata {
     this.website = website;
     this.near_destinations = near_destinations;
     this.no_of_available_rooms = no_of_available_rooms;
+    this.owner_name = owner_name;
+    this.owner_phone = owner_phone;
+    this.owner_email = owner_email;
+    this.image1 = image1;
+    this.image2 = image2;
+    this.image3 = image3;
   }
 }

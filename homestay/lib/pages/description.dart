@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_stay/module/gridview.dart';
 
 import '../module/homedata.dart';
 
@@ -19,14 +20,34 @@ class descriptionPage extends StatefulWidget {
 
 class _descriptionPageState extends State<descriptionPage> {
   bool isFavourite = false;
+  late String imageLink;
   @override
   void _toggleFavourite() {
     setState(() {
       isFavourite = !isFavourite;
     });
   }
+  void showAlertDialog(BuildContext context, imageLink) => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: InteractiveViewer(
+            // clipBehavior: Clip.none,
+            child: Image(
+              image: NetworkImage(imageLink),
+              fit: BoxFit.fill,
+            ),
+          ),
+          insetPadding: EdgeInsets.all(5),
+          contentPadding: EdgeInsets.all(5),
+        ),
+      );
 
   Widget build(BuildContext context) {
+    List<String> images = [
+      widget.descriptionData.image1,
+      widget.descriptionData.image2,
+      widget.descriptionData.image3
+    ];
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(child: Text(widget.descriptionData.homestay_name)),
@@ -205,23 +226,12 @@ class _descriptionPageState extends State<descriptionPage> {
                                   'Major Attraction:',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: widget.descriptionData
-                                        .near_destinations.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 8, 0, 8),
-                                        child: Text('${index + 1 * 1}' +
-                                            '.' +
-                                            ' ' +
-                                            widget.descriptionData
-                                                .near_destinations),
-                                      );
-                                    }),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  widget.descriptionData.near_destinations,
+                                )
                               ],
                             ),
                           ),
@@ -233,23 +243,88 @@ class _descriptionPageState extends State<descriptionPage> {
                             ),
                           ),
                           Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      showAlertDialog(context, widget.descriptionData.image1);
+                                    },
+                                    child: Container(
+                                      height: 100,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              widget.descriptionData.image1),
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ),),
+                                    InkWell(
+                                    onTap: () {
+                                      showAlertDialog(context, widget.descriptionData.image2);
+                                    },
+                                    child: Container(
+                                      height: 100,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              widget.descriptionData.image1),
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ),),
+                                    InkWell(
+                                    onTap: () {
+                                      showAlertDialog(context, widget.descriptionData.image3);
+                                    },
+                                    child: Container(
+                                      height: 100,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              widget.descriptionData.image1),
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ),),
+
+                               
+                              ],
+                            ),
+                            // gridLayout(
+                            //   images
+                            // ),
+                            //
+                          ),
+                          Padding(
                             padding: EdgeInsets.fromLTRB(10, 10, 5, 10),
                             child: Text(
-                              'Contact :',
+                              'Contact Owner:',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text('Email : ' + '  ' + 'owner@gmail.com'),
+                            padding: EdgeInsets.all(5),
+                            child: Text('Email : ' +
+                                '  ' +
+                                widget.descriptionData.owner_email),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text('Phone : ' + '  ' + '984111111'),
+                            padding: EdgeInsets.all(5),
+                            child: Text('Name : ' +
+                                '  ' +
+                                widget.descriptionData.owner_name),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text('Telephone : ' + '  ' + '01-83393993'),
+                            padding: EdgeInsets.all(5),
+                            child: Text('Phone : ' +
+                                '  ' +
+                                widget.descriptionData.owner_phone),
                           ),
                           SizedBox(
                             height: 15,
