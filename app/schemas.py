@@ -25,6 +25,8 @@ class GetHomestay(BaseModel):
     image1: str | None
     image2: str | None
     image3: str | None
+    latitude: float | None
+    longitude: float | None
 
 
 class PostHomestay(BaseModel):
@@ -47,6 +49,8 @@ class PostHomestay(BaseModel):
     image1: str | None
     image2: str | None
     image3: str | None
+    latitude: float | None
+    longitude: float | None
 
 
 class User(BaseModel):
