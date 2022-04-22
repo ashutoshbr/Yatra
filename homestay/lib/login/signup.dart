@@ -1,11 +1,10 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_stay/login/login.dart';
-import 'package:home_stay/main.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import '../main.dart';
-import '../pages/profile.dart';
+
 import '../module/userdata.dart';
 
 class signUp extends StatefulWidget {
@@ -16,11 +15,14 @@ class signUp extends StatefulWidget {
 }
 
 class _signUpState extends State<signUp> {
-
-  Future postUserdata(userdata user) async {
+  Future postUserdata(Userdata user) async {
     String jsonUser = jsonEncode(user);
-    print(jsonUser);
-    var response = await http.post(Uri.http('10.0.2.2:8000', 'user'), body: jsonUser);
+    print('tori' + jsonUser);
+    var response =
+        await Dio().post('http://10.0.2.2:8000/user/', data: jsonUser);
+    print(response.statusCode);
+    print(response.statusMessage);
+    print(response.headers);
   }
 
   final emailController = TextEditingController();
@@ -52,7 +54,7 @@ class _signUpState extends State<signUp> {
               style: Theme.of(context).textTheme.bodyText2,
             ),
             actions: [
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   Navigator.pop(
                     context,
@@ -71,7 +73,7 @@ class _signUpState extends State<signUp> {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(new FocusNode());
+          FocusScope.of(context).requestFocus(FocusNode());
         },
         child: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -97,7 +99,7 @@ class _signUpState extends State<signUp> {
                         AppBar().preferredSize.height) *
                     0.2,
                 width: MediaQuery.of(context).size.width * 0.3,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/icon.png'),
                     // fit: BoxFit.fill,
@@ -138,14 +140,14 @@ class _signUpState extends State<signUp> {
                             borderSide: BorderSide(
                                 color: Theme.of(context).primaryColor),
                           ),
-                          prefixIcon: Icon(Icons.mail),
+                          prefixIcon: const Icon(Icons.mail),
                           labelText: 'Email',
                           // hintText: 'username123@gmail.com',
                           hintStyle: GoogleFonts.lato(
                             color: Theme.of(context).primaryColor,
                           ),
                           isDense: true,
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: const EdgeInsets.all(10),
                         ),
                         style: GoogleFonts.lato(
                           color: Theme.of(context).primaryColor,
@@ -153,14 +155,17 @@ class _signUpState extends State<signUp> {
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
-                          if (value == null || value.isEmpty)
+                          if (value == null || value.isEmpty) {
                             return 'Field is Empty';
+                          }
                           String pattern = r'\w+@\w+\.\w+';
-                          if (!RegExp(pattern).hasMatch(value))
+                          if (!RegExp(pattern).hasMatch(value)) {
                             return 'Invalid E-mail Address format';
+                          }
                           String capital = r'^(?=.*[A-Z])';
-                          if (RegExp(capital).hasMatch(value))
+                          if (RegExp(capital).hasMatch(value)) {
                             return 'Email Address mustn\'t contain Uppercase';
+                          }
                           return null;
                         },
                       ),
@@ -388,8 +393,13 @@ class _signUpState extends State<signUp> {
                     style: GoogleFonts.lato(),
                   ),
                   onPressed: () async {
-                    userdata user1 = userdata(emailController.text, countryController.text, fullnameController.text, usernameController.text, passwordController.text);
-                    postUserdata(user1);
+                    Userdata user1 = Userdata(
+                        email: emailController.text,
+                        country: countryController.text,
+                        fullname: fullnameController.text,
+                        username: usernameController.text,
+                        password: passwordController.text);
+                    await postUserdata(user1);
                     if (_key.currentState!.validate()) {
                       _key.currentState!.save();
                       Navigator.pushAndRemoveUntil(

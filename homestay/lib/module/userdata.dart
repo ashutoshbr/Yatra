@@ -1,29 +1,22 @@
-class userdata {
-  late String email;
-  late String password;
-  late String country;
-  late String fullname;
-  late String username;
+class Userdata {
+  final String email;
+  final String password;
+  final String country;
+  final String fullname;
+  final String username;
 
-  userdata(
-    email, 
-    password,
-    country, 
-    fullname, 
-    username
-  ) 
-  {
-    this.email = email;
-    this.password = password;
-    this.country = country;
-    this.fullname = fullname;
-    this.username = username;
-  }
+  Userdata({
+    required this.email,
+    required this.password,
+    required this.country,
+    required this.fullname,
+    required this.username,
+  });
   Map toJson() => {
-    'email' : email,
-    'password': password,
-    'country': country,
-    'fullname': fullname,
-    'username': username,
-  };
+        'email': email,
+        'password': password,
+        'country': country,
+        'full_name': fullname,
+        'username': username,
+      };
 }
