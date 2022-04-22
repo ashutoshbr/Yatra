@@ -1,5 +1,4 @@
 from datetime import date, time
-from typing import List
 
 from pydantic import BaseModel, EmailStr
 
@@ -20,7 +19,6 @@ class GetHomestay(BaseModel):
     house_type: str | None
     no_of_available_rooms: int | None
     near_dest: str | None
-    
 
 
 class PostHomestay(BaseModel):
@@ -51,19 +49,13 @@ class LoginUser(BaseModel):
     email: EmailStr
     password: str
 
-class SignupUser():
-    email: EmailStr
+
+class AddUser(BaseModel):
+    email: str
     password: str
     country: str | None
-    full_name: str
     username: str
-    
-    def __init__(self, email, password, country, full_name, username):
-        self.email = email
-        self.password = password
-        self.country = country
-        self.full_name = full_name
-        self.username = username
+    fullname: str
 
 
 class Token(BaseModel):

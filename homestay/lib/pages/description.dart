@@ -4,10 +4,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:home_stay/onboarding/homepage.dart';
-import 'package:home_stay/pages/reservation.dart';
+
 import '../module/homedata.dart';
-import '../module/gridview.dart';
 
 class descriptionPage extends StatefulWidget {
   late homedata descriptionData;
@@ -210,8 +208,8 @@ class _descriptionPageState extends State<descriptionPage> {
                                 ListView.builder(
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    itemCount: widget
-                                        .descriptionData.near_destinations.length,
+                                    itemCount: widget.descriptionData
+                                        .near_destinations.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       return Padding(

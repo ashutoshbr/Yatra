@@ -1,12 +1,11 @@
+import json
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 
 from .. import oauth2, schemas, utils
-from ..schemas import SignupUser
 from ..database import conn, cursor
-import json
 
 router = APIRouter(prefix="/user", tags=["User"])
 
@@ -20,23 +19,14 @@ def get_users():
     return users
 
 
-@router.post("/")
-def add_user(jsonUser):
-    print("hell")
-    j = json.loads(jsonUser)
-    email = j["email"]
-    password = j["password"]
-    country = j["country"]
-    fullname = j["fullname"]
-    username = j["username"]
-    print(username)
-    user1 = SignupUser(email, password, country, fullname, username)
-    hashed_password = utils.hash(user1.password)
-    user1.password = hashed_password
+@router.post("/", status_code=status.HTTP_201_CREATED)
+def add_user(user: schemas.AddUser):
+    hashed_password = utils.hash(user.password)
+    user.password = hashed_password
     try:
         cursor.execute(
-            """ INSERT INTO userinfo (email, password, country, full_name, username) VALUES (%s, %s, %s, %s, %s) RETURNING *""",
-            (user1.email, user1.password, user1.country, user1.full_name , user1.username),
+            """ INSERT INTO userinfo (email, password, country, username, fullname) VALUES (%s, %s,%s, %s, %s) RETURNING *""",
+            (user.email, user.password, user.country, user.username, user.fullname),
         )
         conn.commit()
         new_user = cursor.fetchone()

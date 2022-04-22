@@ -16,7 +16,7 @@ class Userdata {
         'email': email,
         'password': password,
         'country': country,
-        'full_name': fullname,
+        'fullname': fullname,
         'username': username,
       };
 }
