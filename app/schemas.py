@@ -63,6 +63,16 @@ class User(BaseModel):
     username: str
 
 
+class AddUser(BaseModel):
+    email: str
+    password: str
+    country: str | None
+    phone: str | None
+    dob: date | None
+    fname: str | None
+    lname: str | None
+
+
 class LoginUser(BaseModel):
     email: EmailStr
     password: str
