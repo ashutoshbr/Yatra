@@ -1,4 +1,6 @@
 from datetime import date, time
+from tkinter import DoubleVar
+from tokenize import Double
 
 from pydantic import BaseModel, EmailStr
 
@@ -9,7 +11,7 @@ class GetHomestay(BaseModel):
     description: str
     created_at: time
     location: str
-    price: float
+    price: int
     website: str | None
     image_url: str | None
     culture_type: str | None
@@ -17,6 +19,16 @@ class GetHomestay(BaseModel):
     bed_type: str | None
     cooling_soln: str | None
     house_type: str | None
+    no_of_available_rooms: int | None
+    near_dest: str | None
+    owner_name: str | None
+    owner_phone: str | None
+    owner_email: str | None
+    image1: str | None
+    image2: str | None
+    image3: str | None
+    latitude: str | None
+    longitude: str | None
 
 
 class PostHomestay(BaseModel):
@@ -31,16 +43,24 @@ class PostHomestay(BaseModel):
     bed_type: str | None
     cooling_soln: str | None
     house_type: str | None
+    no_of_available_rooms: int | None
+    near_dest: str | None
+    owner_name: str | None
+    owner_phone: str | None
+    owner_email: str | None
+    image1: str | None
+    image2: str | None
+    image3: str | None
+    latitude: float | None
+    longitude: float | None
 
 
 class User(BaseModel):
     id: int
     email: str
     country: str | None
-    phone: str | None
-    dob: date | None
-    fname: str | None
-    lname: str | None
+    fullname: str
+    username: str
 
 
 class AddUser(BaseModel):
@@ -56,6 +76,14 @@ class AddUser(BaseModel):
 class LoginUser(BaseModel):
     email: EmailStr
     password: str
+
+
+class AddUser(BaseModel):
+    email: str
+    password: str
+    country: str | None
+    username: str
+    fullname: str
 
 
 class Token(BaseModel):

@@ -4,10 +4,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:home_stay/onboarding/homepage.dart';
-import 'package:home_stay/pages/reservation.dart';
+import 'package:home_stay/module/gridview.dart';
+import './reservation.dart';
 import '../module/homedata.dart';
-import '../module/gridview.dart';
 
 class descriptionPage extends StatefulWidget {
   late homedata descriptionData;
@@ -21,6 +20,7 @@ class descriptionPage extends StatefulWidget {
 
 class _descriptionPageState extends State<descriptionPage> {
   bool isFavourite = false;
+  late String imageLink;
   @override
   void _toggleFavourite() {
     setState(() {
@@ -28,7 +28,27 @@ class _descriptionPageState extends State<descriptionPage> {
     });
   }
 
+  void showAlertDialog(BuildContext context, imageLink) => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: InteractiveViewer(
+            // clipBehavior: Clip.none,
+            child: Image(
+              image: NetworkImage(imageLink),
+              fit: BoxFit.fill,
+            ),
+          ),
+          insetPadding: EdgeInsets.all(5),
+          contentPadding: EdgeInsets.all(5),
+        ),
+      );
+
   Widget build(BuildContext context) {
+    List<String> images = [
+      widget.descriptionData.image1,
+      widget.descriptionData.image2,
+      widget.descriptionData.image3
+    ];
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(child: Text(widget.descriptionData.homestay_name)),
@@ -43,7 +63,7 @@ class _descriptionPageState extends State<descriptionPage> {
               // width: MediaQuery.of(context).size.width * 0.3,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(widget.descriptionData.homestay_photo),
+                  image: NetworkImage(widget.descriptionData.image_url),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -124,11 +144,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   Text(
-                                    widget.descriptionData.homestay_city +
-                                        ',' +
-                                        ' ' +
-                                        widget
-                                            .descriptionData.homestay_district,
+                                    widget.descriptionData.location,
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
@@ -136,7 +152,7 @@ class _descriptionPageState extends State<descriptionPage> {
                               ),
                               Text(
                                 '\$' +
-                                    '${widget.descriptionData.price * 1}'
+                                    '${widget.descriptionData.price}'
                                         '/day',
                               ),
                             ],
@@ -150,7 +166,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              Text(widget.descriptionData.houseType)
+                              Text(widget.descriptionData.house_type)
                             ],
                           ),
                           Row(
@@ -165,7 +181,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                 ),
                               ),
                               Text(
-                                widget.descriptionData.coolingSolution,
+                                widget.descriptionData.cooling_soln,
                               )
                             ],
                           ),
@@ -178,13 +194,15 @@ class _descriptionPageState extends State<descriptionPage> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              Text(widget.descriptionData.latrineType)
+                              Text(widget.descriptionData.toilet_type)
                             ],
                           ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
                             child:
-                                Text('Included :   Breakfast, Lunch, Dinner'),
+                                Text('Location: ' + widget.descriptionData.latitude + ' , ' + widget.descriptionData.longitude,                              
+                                ),
+                                
                           ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
@@ -211,23 +229,12 @@ class _descriptionPageState extends State<descriptionPage> {
                                   'Major Attraction:',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: widget
-                                        .descriptionData.nearDestination.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 8, 0, 8),
-                                        child: Text('${index + 1 * 1}' +
-                                            '.' +
-                                            ' ' +
-                                            widget.descriptionData
-                                                .nearDestination[index]),
-                                      );
-                                    }),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  widget.descriptionData.near_destinations,
+                                )
                               ],
                             ),
                           ),
@@ -240,27 +247,91 @@ class _descriptionPageState extends State<descriptionPage> {
                           ),
                           Padding(
                             padding: EdgeInsets.all(10),
-                            child: gridLayout(
-                                widget.descriptionData.photo_collection),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    showAlertDialog(
+                                        context, widget.descriptionData.image1);
+                                  },
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            widget.descriptionData.image1),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    showAlertDialog(
+                                        context, widget.descriptionData.image2);
+                                  },
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            widget.descriptionData.image1),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    showAlertDialog(
+                                        context, widget.descriptionData.image3);
+                                  },
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            widget.descriptionData.image1),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // gridLayout(
+                            //   images
+                            // ),
+                            //
                           ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 10, 5, 10),
                             child: Text(
-                              'Contact :',
+                              'Contact Owner:',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text('Email : ' + '  ' + 'owner@gmail.com'),
+                            padding: EdgeInsets.all(5),
+                            child: Text('Email : ' +
+                                '  ' +
+                                widget.descriptionData.owner_email),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text('Phone : ' + '  ' + '984111111'),
+                            padding: EdgeInsets.all(5),
+                            child: Text('Name : ' +
+                                '  ' +
+                                widget.descriptionData.owner_name),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text('Telephone : ' + '  ' + '01-83393993'),
+                            padding: EdgeInsets.all(5),
+                            child: Text('Phone : ' +
+                                '  ' +
+                                widget.descriptionData.owner_phone),
                           ),
                           SizedBox(
                             height: 15,
@@ -275,7 +346,18 @@ class _descriptionPageState extends State<descriptionPage> {
                                   'Reserve',
                                   style: GoogleFonts.lato(fontSize: 20),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => reservation(
+                                          widget.descriptionData.image_url,
+                                          widget.descriptionData
+                                              .no_of_available_rooms,
+                                          widget.descriptionData.homestay_name),
+                                    ),
+                                  );
+                                },
                                 style: ButtonStyle(
                                   shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(

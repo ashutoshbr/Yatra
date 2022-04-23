@@ -1,3 +1,4 @@
+import json
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -10,10 +11,9 @@ router = APIRouter(prefix="/user", tags=["User"])
 
 
 @router.get("/", response_model=List[schemas.User])
-def get_users(user_email: str = Depends(oauth2.verify_access_token)):
+def get_users():
     cursor.execute(""" SELECT * FROM userinfo """)
     users = cursor.fetchall()
-    print(user_email)
     return users
 
 
@@ -23,16 +23,8 @@ def add_user(user: schemas.AddUser):
     user.password = hashed_password
     try:
         cursor.execute(
-            """ INSERT INTO userinfo (email, password, country, phone, dob, fname, lname) VALUES (%s, %s,%s, %s,%s, %s, %s) RETURNING *""",
-            (
-                user.email,
-                user.password,
-                user.country,
-                user.phone,
-                user.dob,
-                user.fname,
-                user.lname,
-            ),
+            """ INSERT INTO userinfo (email, password, country, username, fullname) VALUES (%s, %s,%s, %s, %s) RETURNING *""",
+            (user.email, user.password, user.country, user.username, user.fullname),
         )
         conn.commit()
         new_user = cursor.fetchone()
@@ -47,10 +39,10 @@ def add_user(user: schemas.AddUser):
 
 
 @router.post("/login", response_model=schemas.Token)
-def login_user(user_credentials: OAuth2PasswordRequestForm = Depends()):
+def login_user(user_credentials: schemas.LoginUser):
     cursor.execute(
-        """ SELECT password FROM userinfo WHERE email=%s """,
-        (user_credentials.username,),
+        """ SELECT password FROM userinfo WHERE email= %s """,
+        (user_credentials.email,),
     )
     db_password = cursor.fetchone()
 
@@ -61,7 +53,7 @@ def login_user(user_credentials: OAuth2PasswordRequestForm = Depends()):
             status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Credentials"
         )
 
-    access_token = oauth2.create_access_token(data={"email": user_credentials.username})
+    access_token = oauth2.create_access_token(data={"email": user_credentials.email})
     return {"access_token": access_token, "token_type": "bearer"}
 
 

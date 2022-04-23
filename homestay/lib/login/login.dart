@@ -1,9 +1,13 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import './signup.dart';
 import '../main.dart';
-import 'package:geolocator/geolocator.dart';
+import '../module/logindetails.dart';
 
 class logIn extends StatefulWidget {
   const logIn({Key? key}) : super(key: key);
@@ -13,24 +17,22 @@ class logIn extends StatefulWidget {
 }
 
 class _logInState extends State<logIn> {
+  Future postLogindata(Logindetails user) async {
+    String jsonUser = jsonEncode(user);
+    print(jsonUser);
+    var response =
+        await Dio().post('http://10.0.2.2:8000/user/login', data: jsonUser);
+    print(response);
+    print(response.statusCode);
+    print(response.statusMessage);
+    print(response.headers);
+  }
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isPasswordVisible = false;
   int borderRadius = 10;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  // void getCurrentPosition() async {
-  //   LocationPermission permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied ||
-  //       permission == LocationPermission.deniedForever) {
-  //     print("Permission not given");
-  //     LocationPermission ask = await Geolocator.requestPermission();
-  //   } else {
-  //     Position currentPosition = await Geolocator.getCurrentPosition(
-  //         desiredAccuracy: LocationAccuracy.best);
-  //     print('Latitude: ' + currentPosition.latitude.toString());
-  //     print('Longitude: ' + currentPosition.longitude.toString());
-  //   }
-  // }
 
   @override
   void dispose() {
@@ -221,11 +223,13 @@ one uupercase letter and one digit ''';
                     style: GoogleFonts.lato(),
                   ),
                   onPressed: () {
-                    // getCurrentPosition();
-                    // if (_key.currentState!.validate()) {
-                    //   _key.currentState!.save();
+                    Logindetails user1 = Logindetails(
+                        email: emailController.text,
+                        password: passwordController.text);
+                    postLogindata(user1);
                     print(emailController.text);
                     print(passwordController.text);
+
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
@@ -272,12 +276,12 @@ one uupercase letter and one digit ''';
                 child: Row(
                   children: <Widget>[
                     Text(
-                      'Does not have an account?',
+                      'No account yet?',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     TextButton(
                       child: Text(
-                        'Sign in',
+                        'Sign up',
                         style: GoogleFonts.lato(
                           color: Color(0xff533e85),
                           decoration: TextDecoration.underline,
