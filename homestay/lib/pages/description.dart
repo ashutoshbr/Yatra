@@ -199,7 +199,9 @@ class _descriptionPageState extends State<descriptionPage> {
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
                             child:
-                                Text('Included :   Breakfast, Lunch, Dinner'),
+                                Text('Location: ' + widget.descriptionData.latitude + ' , ' + widget.descriptionData.longitude,                              
+                                ),
+                                
                           ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 10, 0, 10),

@@ -17,7 +17,7 @@ class signUp extends StatefulWidget {
 class _signUpState extends State<signUp> {
   Future postUserdata(Userdata user) async {
     String jsonUser = jsonEncode(user);
-    print('tori' + jsonUser);
+    print(jsonUser);
     var response =
         await Dio().post('http://10.0.2.2:8000/user/', data: jsonUser);
     print(response.statusCode);
