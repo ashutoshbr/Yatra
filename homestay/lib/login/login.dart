@@ -31,7 +31,7 @@ class _logInState extends State<logIn> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isPasswordVisible = false;
-  int borderRadius = 10;
+  int borderRadius = 11;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   @override
