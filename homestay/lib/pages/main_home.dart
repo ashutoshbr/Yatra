@@ -378,36 +378,36 @@ class _MainHomeState extends State<MainHome> {
                                                     height: 0,
                                                   );
                                           }),
-                                      SizedBox(
-                                        width: 300,
-                                        height: 40,
-                                        child: ElevatedButton(
-                                          child: Text(
-                                            'Available HomeStays',
-                                            style:
-                                                GoogleFonts.lato(fontSize: 20),
-                                          ),
-                                          onPressed: () {
-                                            getHomestayData();
-                                          },
-                                          style: ButtonStyle(
-                                            shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 20, bottom: 20),
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Container(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Available HomeStays',
+                                                  style: GoogleFonts.lato(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Icon(Icons.filter_list,
+                                                    color: Theme.of(context)
+                                                        .primaryColor),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: (MediaQuery.of(context)
-                                                    .size
-                                                    .height -
-                                                AppBar().preferredSize.height) *
-                                            0.05,
-                                      ),
+                                      // SizedBox(
+                                      //   height: (MediaQuery.of(context)
+                                      //               .size
+                                      //               .height -
+                                      //           AppBar().preferredSize.height) *
+                                      //       0.05,
+                                      // ),
                                       ListView.builder(
                                           shrinkWrap: true,
                                           physics:
@@ -595,157 +595,174 @@ class _MainHomeState extends State<MainHome> {
                       height: 0,
                     ),
             ),
-            currentLat == '' && currentLog == '' ?
-            SizedBox(
-              width: 300,
-              height: 40,
-              child: ElevatedButton(
-                child: Text(
-                  'Available HomeStays',
-                  style: GoogleFonts.lato(fontSize: 20),
-                ),
-                onPressed: () {
-                  getHomestayData();
-                },
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-            ): Container(height:0),
-            currentLat == '' && currentLog == '' ?
-            SizedBox(
-              height: (MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height) *
-                  0.05,
-            ): Container(height:0),
-            currentLat == '' && currentLog == '' ?
-            Container(
-                child: FutureBuilder(
-              future: getHomestayData(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                } else if (snapshot.hasData) {
-                  var homedataList = snapshot.data as List<homedata>;
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: homedataList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                            margin: EdgeInsets.fromLTRB(
-                                MediaQuery.of(context).size.width * 0.04,
-                                0,
-                                MediaQuery.of(context).size.width * 0.04,
-                                (MediaQuery.of(context).size.height -
-                                        AppBar().preferredSize.height) *
-                                    0.05),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+            currentLat == '' && currentLog == ''
+                ? Padding(
+                    padding: EdgeInsets.only(left: 20, bottom: 20),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Text(
+                              'Available HomeStays',
+                              style: GoogleFonts.lato(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            elevation: 15,
-                            child: InkWell(
-                              onTap: (() {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          descriptionPage(homedataList[index])),
-                                );
-                              }),
-                              child: Column(
-                                children: [
-                                  // ----------------->image holder<-------------------//
-                                  Container(
-                                    height:
-                                        (MediaQuery.of(context).size.height -
-                                                AppBar().preferredSize.height) *
-                                            0.25,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                          homedataList[index].image_url,
-                                        ),
-                                        fit: BoxFit.fill,
-                                      ),
-                                      borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(5),
-                                        topLeft: Radius.circular(5),
-                                      ),
-                                    ),
-                                  ),
-                                  // ------------->Homestay name and Addresss<------------------//
-                                  Container(
-                                    height:
-                                        (MediaQuery.of(context).size.height -
-                                                AppBar().preferredSize.height) *
-                                            0.1,
-                                    padding: EdgeInsets.fromLTRB(
-                                      MediaQuery.of(context).size.width * 0.025,
-                                      MediaQuery.of(context).size.width * 0.015,
-                                      MediaQuery.of(context).size.width * 0.02,
+                            Icon(Icons.filter_list,
+                                color: Theme.of(context).primaryColor),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(height: 0),
+            currentLat == '' && currentLog == ''
+                ?
+                // SizedBox(
+                //   height: (MediaQuery.of(context).size.height -
+                //           AppBar().preferredSize.height) *
+                //       0.0,
+                // ): Container(height:0),
+                // currentLat == '' && currentLog == '' ?
+                Container(
+                    child: FutureBuilder(
+                    future: getHomestayData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      } else if (snapshot.hasData) {
+                        var homedataList = snapshot.data as List<homedata>;
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: homedataList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                  margin: EdgeInsets.fromLTRB(
+                                      MediaQuery.of(context).size.width * 0.04,
                                       0,
-                                    ),
+                                      MediaQuery.of(context).size.width * 0.04,
+                                      (MediaQuery.of(context).size.height -
+                                              AppBar().preferredSize.height) *
+                                          0.05),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  elevation: 15,
+                                  child: InkWell(
+                                    onTap: (() {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                descriptionPage(
+                                                    homedataList[index])),
+                                      );
+                                    }),
                                     child: Column(
                                       children: [
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: FittedBox(
-                                            child: Text(
-                                                homedataList[index]
-                                                    .homestay_name,
-                                                style: GoogleFonts.lato(
-                                                    fontSize: 20,
-                                                    color: Colors.white)),
+                                        // ----------------->image holder<-------------------//
+                                        Container(
+                                          height: (MediaQuery.of(context)
+                                                      .size
+                                                      .height -
+                                                  AppBar()
+                                                      .preferredSize
+                                                      .height) *
+                                              0.25,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                homedataList[index].image_url,
+                                              ),
+                                              fit: BoxFit.fill,
+                                            ),
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(5),
+                                              topLeft: Radius.circular(5),
+                                            ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: FittedBox(
-                                            child: Text(
-                                                homedataList[index].location,
-                                                style: GoogleFonts.lato(
-                                                    fontSize: 17,
-                                                    color: Colors.white)),
+                                        // ------------->Homestay name and Addresss<------------------//
+                                        Container(
+                                          height: (MediaQuery.of(context)
+                                                      .size
+                                                      .height -
+                                                  AppBar()
+                                                      .preferredSize
+                                                      .height) *
+                                              0.1,
+                                          padding: EdgeInsets.fromLTRB(
+                                            MediaQuery.of(context).size.width *
+                                                0.025,
+                                            MediaQuery.of(context).size.width *
+                                                0.015,
+                                            MediaQuery.of(context).size.width *
+                                                0.02,
+                                            0,
                                           ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: FittedBox(
-                                            child: Text('Click To Learn More',
-                                                style: GoogleFonts.lato(
-                                                    fontSize: 10,
-                                                    color: Colors.white)),
+                                          child: Column(
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: FittedBox(
+                                                  child: Text(
+                                                      homedataList[index]
+                                                          .homestay_name,
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 20,
+                                                          color: Colors.white)),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: FittedBox(
+                                                  child: Text(
+                                                      homedataList[index]
+                                                          .location,
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 17,
+                                                          color: Colors.white)),
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: FittedBox(
+                                                  child: Text(
+                                                      'Click To Learn More',
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 10,
+                                                          color: Colors.white)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff533e85),
+                                            borderRadius: BorderRadius.only(
+                                              bottomRight: Radius.circular(5),
+                                              bottomLeft: Radius.circular(5),
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    decoration: BoxDecoration(
-                                      color: Color(0xff533e85),
-                                      borderRadius: BorderRadius.only(
-                                        bottomRight: Radius.circular(5),
-                                        bottomLeft: Radius.circular(5),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ));
-                      });
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            )): Container(height:0)
+                                  ));
+                            });
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ))
+                : Container(height: 0)
           ],
         ),
       ),
