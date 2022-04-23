@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 class homedata {
   late int id;
   late String homestay_name;
@@ -20,6 +22,8 @@ class homedata {
   late String image1;
   late String image2;
   late String image3;
+  late String latitude;
+  late String longitude;
   
 
   homedata(
@@ -43,7 +47,9 @@ class homedata {
       owner_email,
       image1,
       image2,
-      image3
+      image3,
+      latitude,
+      longitude
       ) {
     this.id = id;
     this.homestay_name = homestay_name;
@@ -66,5 +72,8 @@ class homedata {
     this.image1 = image1;
     this.image2 = image2;
     this.image3 = image3;
+    this.latitude = latitude;
+    this.longitude = longitude;
+
   }
 }

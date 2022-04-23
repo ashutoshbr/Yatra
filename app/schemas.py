@@ -1,4 +1,6 @@
 from datetime import date, time
+from tkinter import DoubleVar
+from tokenize import Double
 
 from pydantic import BaseModel, EmailStr
 
@@ -25,8 +27,8 @@ class GetHomestay(BaseModel):
     image1: str | None
     image2: str | None
     image3: str | None
-    latitude: float | None
-    longitude: float | None
+    latitude: str | None
+    longitude: str | None
 
 
 class PostHomestay(BaseModel):
