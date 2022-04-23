@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_stay/module/gridview.dart';
-
+import './reservation.dart';
 import '../module/homedata.dart';
 
 class descriptionPage extends StatefulWidget {
@@ -27,6 +27,7 @@ class _descriptionPageState extends State<descriptionPage> {
       isFavourite = !isFavourite;
     });
   }
+
   void showAlertDialog(BuildContext context, imageLink) => showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -250,52 +251,56 @@ class _descriptionPageState extends State<descriptionPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 InkWell(
-                                    onTap: () {
-                                      showAlertDialog(context, widget.descriptionData.image1);
-                                    },
-                                    child: Container(
-                                      height: 100,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              widget.descriptionData.image1),
-                                          fit: BoxFit.fill,
-                                        ),
+                                  onTap: () {
+                                    showAlertDialog(
+                                        context, widget.descriptionData.image1);
+                                  },
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            widget.descriptionData.image1),
+                                        fit: BoxFit.fill,
                                       ),
-                                    ),),
-                                    InkWell(
-                                    onTap: () {
-                                      showAlertDialog(context, widget.descriptionData.image2);
-                                    },
-                                    child: Container(
-                                      height: 100,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              widget.descriptionData.image1),
-                                          fit: BoxFit.fill,
-                                        ),
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    showAlertDialog(
+                                        context, widget.descriptionData.image2);
+                                  },
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            widget.descriptionData.image1),
+                                        fit: BoxFit.fill,
                                       ),
-                                    ),),
-                                    InkWell(
-                                    onTap: () {
-                                      showAlertDialog(context, widget.descriptionData.image3);
-                                    },
-                                    child: Container(
-                                      height: 100,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              widget.descriptionData.image1),
-                                          fit: BoxFit.fill,
-                                        ),
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    showAlertDialog(
+                                        context, widget.descriptionData.image3);
+                                  },
+                                  child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            widget.descriptionData.image1),
+                                        fit: BoxFit.fill,
                                       ),
-                                    ),),
-
-                               
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                             // gridLayout(
@@ -341,7 +346,18 @@ class _descriptionPageState extends State<descriptionPage> {
                                   'Reserve',
                                   style: GoogleFonts.lato(fontSize: 20),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => reservation(
+                                          widget.descriptionData.image_url,
+                                          widget.descriptionData
+                                              .no_of_available_rooms,
+                                          widget.descriptionData.homestay_name),
+                                    ),
+                                  );
+                                },
                                 style: ButtonStyle(
                                   shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
