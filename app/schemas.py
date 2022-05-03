@@ -1,6 +1,4 @@
 from datetime import date, time
-from tkinter import DoubleVar
-from tokenize import Double
 
 from pydantic import BaseModel, EmailStr
 
