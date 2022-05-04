@@ -1,8 +1,6 @@
-import json
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
-from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from .. import oauth2, schemas, utils
 from ..database import conn, cursor
@@ -27,8 +25,7 @@ def add_user(user: schemas.AddUser):
             (user.email, user.password, user.country, user.username, user.fullname),
         )
         conn.commit()
-        new_user = cursor.fetchone()
-        return new_user
+        return "Success"
     except:
         cursor.execute("""ROLLBACK;""")
         conn.commit()
@@ -53,37 +50,39 @@ def login_user(user_credentials: schemas.LoginUser):
             status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Credentials"
         )
 
-    access_token = oauth2.create_access_token(data={"email": user_credentials.email})
+    cursor.execute(
+        """ SELECT id FROM userinfo WHERE email= %s """,
+        (user_credentials.email,),
+    )
+    user_id = cursor.fetchone()
+    access_token = oauth2.create_access_token(data={"id": user_id["id"]})
     return {"access_token": access_token, "token_type": "bearer"}
 
 
 @router.get("/favourite")
-def get_favourite(
-    request: Request, user_email: str = Depends(oauth2.verify_access_token)
-):
-    cursor.execute(""" SELECT homestay_id FROM favourite """)
+def get_favourite(user_id: int = Depends(oauth2.verify_access_token)):
+    print(user_id)
+    cursor.execute(
+        """ SELECT * FROM homestay INNER JOIN favourite ON homestay.id=favourite.homestay_id WHERE user_id=%s""",
+        (str(user_id),),
+    )
     favourites = cursor.fetchall()
-    print(user_email)
-    my_header = request.headers.get("Authorization")
-    print(my_header)
     return favourites
 
 
 @router.post("/favourite")
 def add_favourite(
     favourite: schemas.AddFavourite,
-    user_email: str = Depends(oauth2.verify_access_token),
+    user_id: str = Depends(oauth2.verify_access_token),
 ):
+    print(user_id, favourite.homestay_id)
     try:
-        cursor.execute(""" SELECT id FROM userinfo WHERE email=%s""", (user_email,)),
-        user_id = cursor.fetchone()
         cursor.execute(
             """ INSERT INTO favourite (user_id, homestay_id) VALUES (%s, %s) RETURNING *""",
-            (user_id["id"], favourite.homestay_id),
+            (user_id, favourite.homestay_id),
         )
-        new_favourite = cursor.fetchone()
+        cursor.fetchone()
         conn.commit()
-        print(user_email, user_id["id"])
     except:
         cursor.execute("""ROLLBACK;""")
         conn.commit()
@@ -91,4 +90,4 @@ def add_favourite(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"Invalid action",
         )
-    return new_favourite
+    return "Success"
