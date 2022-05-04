@@ -17,15 +17,22 @@ class logIn extends StatefulWidget {
 }
 
 class _logInState extends State<logIn> {
-  Future postLogindata(Logindetails user) async {
+  Future<bool> postLogindata(Logindetails user) async {
     String jsonUser = jsonEncode(user);
     print(jsonUser);
-    var response =
-        await Dio().post('http://10.0.2.2:8000/user/login', data: jsonUser);
-    print(response);
-    print(response.statusCode);
-    print(response.statusMessage);
-    print(response.headers);
+    var token = await storage.read('token');
+    try {
+      var response =
+          await Dio().post('http://10.0.2.2:8000/user/login', data: jsonUser,options: Options(
+            headers: {
+              'Authorization': "Bearer ${token}",
+            }
+          ));
+      storage.write('token',value:response.data.)
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   final emailController = TextEditingController();
@@ -222,21 +229,24 @@ one uupercase letter and one digit ''';
                     'Login',
                     style: GoogleFonts.lato(),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     Logindetails user1 = Logindetails(
                         email: emailController.text,
                         password: passwordController.text);
-                    postLogindata(user1);
-                    print(emailController.text);
-                    print(passwordController.text);
+                    bool loggedIn = await postLogindata(user1);
+                    if (loggedIn) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyHomePage(),
+                        ),
+                        (Route<dynamic> route) => false,
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Incorrect Credentials")));
+                    }
 
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MyHomePage(),
-                      ),
-                      (Route<dynamic> route) => false,
-                    );
                     // }
                   },
                   style: ButtonStyle(

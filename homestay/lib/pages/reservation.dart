@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import '../module/homedata.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../pages/main_home.dart';
 import 'package:flutter/services.dart';
-import '../main.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class reservation extends StatefulWidget {
   late String imageLink;
@@ -40,19 +37,22 @@ class _reservationState extends State<reservation> {
             style: Theme.of(context).textTheme.bodyText2,
           ),
           actions: [
-            FlatButton(
+            TextButton(
                 onPressed: () {
                   setState(() {
                     widget.no_of_available_rooms =
                         widget.no_of_available_rooms -
                             num.parse(roomsController.text);
                   });
-                  Navigator.pushAndRemoveUntil(
+                  // Navigator.pushAndRemoveUntil(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => MyHomePage(),
+                  //   ),
+                  //   (Route<dynamic> route) => false,
+                  // );
+                  Navigator.pop(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => MyHomePage(),
-                    ),
-                    (Route<dynamic> route) => false,
                   );
                 },
                 child:

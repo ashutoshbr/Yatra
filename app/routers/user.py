@@ -1,7 +1,7 @@
 import json
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 
 from .. import oauth2, schemas, utils
@@ -58,10 +58,14 @@ def login_user(user_credentials: schemas.LoginUser):
 
 
 @router.get("/favourite")
-def get_favourite(user_email: str = Depends(oauth2.verify_access_token)):
+def get_favourite(
+    request: Request, user_email: str = Depends(oauth2.verify_access_token)
+):
     cursor.execute(""" SELECT homestay_id FROM favourite """)
     favourites = cursor.fetchall()
     print(user_email)
+    my_header = request.headers.get("Authorization")
+    print(my_header)
     return favourites
 
 
