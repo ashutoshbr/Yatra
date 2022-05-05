@@ -1,10 +1,14 @@
+import os
 from typing import List
 
+import yagmail
+from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from .. import oauth2, schemas, utils
 from ..database import conn, cursor
 
+load_dotenv()
 router = APIRouter(prefix="/user", tags=["User"])
 
 
@@ -115,4 +119,18 @@ def add_booking(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"Invalid action",
         )
+
+    cursor.execute(
+        """ SELECT owner_email FROM homestay WHERE id=%s""",
+        (booking.homestay_id,),
+    )
+    owner_email = cursor.fetchone()["owner_email"]
+    print(owner_email)
+    yag = yagmail.SMTP(f"{os.environ['GUSER']}", f"{os.environ['GPASS']}")
+    yag.send(
+        f"{owner_email}",
+        subject="Homestay Booked",
+        contents=f"Your homestay has been booked.\n\nDetails:\nUser ID: {user_id}\nDate:{booking.date}\nNo of. Days: {booking.no_of_days}\nNo. of customers: {booking.no_of_customers}",
+    )
+
     return "Homestay booked"
