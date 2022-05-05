@@ -59,7 +59,7 @@ def login_user(user_credentials: schemas.LoginUser):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/favourite")
+@router.get("/favourite", response_model=List[schemas.GetHomestay])
 def get_favourite(user_id: int = Depends(oauth2.verify_access_token)):
     print(user_id)
     cursor.execute(
