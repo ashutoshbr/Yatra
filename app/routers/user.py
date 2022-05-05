@@ -75,13 +75,11 @@ def add_favourite(
     favourite: schemas.AddFavourite,
     user_id: str = Depends(oauth2.verify_access_token),
 ):
-    print(user_id, favourite.homestay_id)
     try:
         cursor.execute(
             """ INSERT INTO favourite (user_id, homestay_id) VALUES (%s, %s) RETURNING *""",
             (user_id, favourite.homestay_id),
         )
-        cursor.fetchone()
         conn.commit()
     except:
         cursor.execute("""ROLLBACK;""")
@@ -90,4 +88,31 @@ def add_favourite(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"Invalid action",
         )
-    return "Success"
+    return "Added to favourite"
+
+
+@router.post("/booking")
+def add_booking(
+    booking: schemas.AddBooking,
+    user_id: str = Depends(oauth2.verify_access_token),
+):
+    try:
+        cursor.execute(
+            """ INSERT INTO booking (user_id, date, no_of_days, homestay_id, no_of_customers) VALUES (%s, %s, %s, %s, %s) RETURNING *""",
+            (
+                user_id,
+                booking.date,
+                booking.no_of_days,
+                booking.homestay_id,
+                booking.no_of_customers,
+            ),
+        )
+        conn.commit()
+    except:
+        cursor.execute("""ROLLBACK;""")
+        conn.commit()
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Invalid action",
+        )
+    return "Homestay booked"

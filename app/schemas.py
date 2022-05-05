@@ -91,3 +91,10 @@ class Token(BaseModel):
 
 class AddFavourite(BaseModel):
     homestay_id: int
+
+
+class AddBooking(BaseModel):
+    date: date
+    no_of_days: int
+    homestay_id: int
+    no_of_customers: int
