@@ -20,15 +20,19 @@ class _logInState extends State<logIn> {
   Future<bool> postLogindata(Logindetails user) async {
     String jsonUser = jsonEncode(user);
     print(jsonUser);
-    var token = await storage.read('token');
+    // var token = await storage.read('token');
+    // try {
+    //   var response =
+    //       await Dio().post('http://10.0.2.2:8000/user/login', data: jsonUser,options: Options(
+    //         headers: {
+    //           'Authorization': "Bearer ${token}",
+    //         }
+    //       ));
+    //   storage.write('token',value:response.data.)
+
     try {
       var response =
-          await Dio().post('http://10.0.2.2:8000/user/login', data: jsonUser,options: Options(
-            headers: {
-              'Authorization': "Bearer ${token}",
-            }
-          ));
-      storage.write('token',value:response.data.)
+          await Dio().post('http://10.0.2.2:8000/user/login', data: jsonUser);
       return true;
     } catch (e) {
       return false;
