@@ -226,12 +226,18 @@ class _descriptionPageState extends State<descriptionPage> {
                               Text(widget.descriptionData.toilet_type)
                             ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                            child:
-                                Text('Location: ' + widget.descriptionData.latitude + ' , ' + widget.descriptionData.longitude,                              
-                                ),
-                                
+                          Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                                child: Text('Location: ',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              Text(widget.descriptionData.latitude +
+                                  '    ' +
+                                  widget.descriptionData.longitude),
+                            ],
                           ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
