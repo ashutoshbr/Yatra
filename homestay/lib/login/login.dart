@@ -4,7 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './signup.dart';
 import '../main.dart';
 import '../module/logindetails.dart';
@@ -18,6 +19,7 @@ class logIn extends StatefulWidget {
 
 class _logInState extends State<logIn> {
   Future<bool> postLogindata(Logindetails user) async {
+    final storage = new FlutterSecureStorage();
     String jsonUser = jsonEncode(user);
     print(jsonUser);
     // var token = await storage.read('token');
@@ -29,10 +31,10 @@ class _logInState extends State<logIn> {
     //         }
     //       ));
     //   storage.write('token',value:response.data.)
-
     try {
-      var response =
-          await Dio().post('http://10.0.2.2:8000/user/login', data: jsonUser);
+      var response = await Dio().post('http://10.0.2.2:8000/user/login', data: jsonUser);
+      print(response);
+      await storage.write(key: "token", value: response.data["access_token"]);
       return true;
     } catch (e) {
       return false;
@@ -238,6 +240,7 @@ one uupercase letter and one digit ''';
                         email: emailController.text,
                         password: passwordController.text);
                     bool loggedIn = await postLogindata(user1);
+                    print(loggedIn);
                     if (loggedIn) {
                       Navigator.pushAndRemoveUntil(
                         context,

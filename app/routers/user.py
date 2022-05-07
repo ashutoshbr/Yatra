@@ -21,7 +21,7 @@ def get_users():
 @router.get("/profile")
 def get_profile(user_id: int = Depends(oauth2.verify_access_token)):
     cursor.execute(
-        """ SELECT email, username FROM userinfo WHERE user_id=%s""",
+        """ SELECT email, username FROM userinfo WHERE id=%s""",
         (str(user_id),),
     )
     user = cursor.fetchone()

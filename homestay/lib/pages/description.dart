@@ -1,12 +1,16 @@
 // ignore_for_file: prefer_adjacent_string_concatenation
 
+import 'dart:convert';
 import 'dart:ui';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_stay/module/gridview.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './reservation.dart';
 import '../module/homedata.dart';
+import "../module/faourites.dart";
 
 class descriptionPage extends StatefulWidget {
   late homedata descriptionData;
@@ -19,6 +23,25 @@ class descriptionPage extends StatefulWidget {
 }
 
 class _descriptionPageState extends State<descriptionPage> {
+
+  Future<bool> postFavourite(AddFavourite favourite) async {
+    String jsonFavourite = jsonEncode(favourite);
+    final storage = new FlutterSecureStorage();
+    var token = await storage.read(key: "token");
+    print(token);
+    try {
+      var response = await Dio().post('http://10.0.2.2:8000/user/favourite', data: jsonFavourite, options: 
+        Options( headers: {
+            'Authorization': "Bearer ${token}",
+      }));
+      print(response.data);
+      return true;
+    }
+    catch (e) {
+      return false;
+    }
+  }
+
   bool isFavourite = false;
   late String imageLink;
   @override
@@ -104,8 +127,13 @@ class _descriptionPageState extends State<descriptionPage> {
                             ),
                             // -------------> contains fav icon <-------------------//
                             IconButton(
-                              onPressed: () {
-                                _toggleFavourite();
+                              onPressed: () async {
+                                int homestay_id = widget.descriptionData.id;
+                                AddFavourite add_favourite = AddFavourite(homestay_id: homestay_id);
+                                bool added = await postFavourite(add_favourite);
+                                if (added) {
+                                  _toggleFavourite();
+                                }
                               },
                               icon: isFavourite
                                   ? Icon(
