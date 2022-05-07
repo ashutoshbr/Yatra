@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_stay/module/addBooking.dart';
 import 'package:home_stay/module/gridview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './reservation.dart';
@@ -306,7 +307,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: NetworkImage(
-                                            widget.descriptionData.image1),
+                                            widget.descriptionData.image2),
                                         fit: BoxFit.fill,
                                       ),
                                     ),
@@ -323,7 +324,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: NetworkImage(
-                                            widget.descriptionData.image1),
+                                            widget.descriptionData.image3),
                                         fit: BoxFit.fill,
                                       ),
                                     ),
@@ -374,7 +375,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                   'Reserve',
                                   style: GoogleFonts.lato(fontSize: 20),
                                 ),
-                                onPressed: () {
+                                onPressed: () {                        
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -382,7 +383,8 @@ class _descriptionPageState extends State<descriptionPage> {
                                           widget.descriptionData.image_url,
                                           widget.descriptionData
                                               .no_of_available_rooms,
-                                          widget.descriptionData.homestay_name),
+                                          widget.descriptionData.homestay_name,
+                                          widget.descriptionData.id),
                                     ),
                                   );
                                 },

@@ -21,7 +21,8 @@ class _MainHomeState extends State<MainHome> {
     // var response = await http.get(Uri.http('10.0.2.2:8000', 'homestay'));
     var response = await http.get(Uri.http('10.0.2.2:8000', 'homestay'));
     var jsonData = jsonDecode(response.body);
-
+    print(response);
+    print(jsonData);
     List<homedata> homedataList = [];
     for (var h in jsonData) {
       homedata H = homedata(
@@ -51,6 +52,7 @@ class _MainHomeState extends State<MainHome> {
 
       homedataList.add(H);
     }
+    print("llllllllllllllllllllllll");
     print(homedataList);
     print(homedataList.length);
     return homedataList;
@@ -776,22 +778,3 @@ class _MainHomeState extends State<MainHome> {
     );
   }
 }
-
-
-// import 'package:flutter/material.dart';
-
-// class MainHome extends StatefulWidget {
-//   const MainHome({ Key? key }) : super(key: key);
-
-//   @override
-//   State<MainHome> createState() => _MainHomeState();
-// }
-
-// class _MainHomeState extends State<MainHome> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-      
-//     );
-//   }
-// }

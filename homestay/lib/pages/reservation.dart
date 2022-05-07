@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:dio/dio.dart';
+import "../module/addBooking.dart";
+import 'dart:convert';
+import 'package:jsonize/jsonize.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class reservation extends StatefulWidget {
   late String imageLink;
   late num no_of_available_rooms;
   late String homestay_name;
+  late int homestay_id;
 
-  reservation(imageLink, no_of_available_rooms, homestay_name) {
+  reservation(imageLink, no_of_available_rooms, homestay_name, homestay_id) {
     this.imageLink = imageLink;
     this.no_of_available_rooms = no_of_available_rooms;
     this.homestay_name = homestay_name;
+    this.homestay_id = homestay_id;
   }
 
   @override
@@ -18,6 +26,33 @@ class reservation extends StatefulWidget {
 }
 
 class _reservationState extends State<reservation> {
+
+    Future<bool> Bookings(addBooking booking) async {
+    String date_ = booking.date.toString();
+    // print(DateFormat('yyyy-MM-dd').format(booking.date));
+    // var jsonBooking = jsonEncode(booking);
+    var book = {
+      "date": date_,
+      "no_of_days": booking.no_of_days,
+      "homestay_id": booking.homestay_id,
+      "no_of_rooms": booking.no_of_rooms
+    };
+    print(book);
+    final storage = new FlutterSecureStorage();
+    var token = await storage.read(key: "token");
+    try {
+      var response = await Dio().post('http://10.0.2.2:8000/user/booking', data: book, options: 
+        Options( headers: {
+            'Authorization': "Bearer ${token}",
+      }));
+    print(response.data);
+    return true;
+    }
+    catch(e) {
+      return false;
+    }
+  }
+
   final durationController = TextEditingController();
   final roomsController = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
@@ -38,7 +73,16 @@ class _reservationState extends State<reservation> {
           ),
           actions: [
             TextButton(
-                onPressed: () {
+              onPressed: () {
+                Navigator.pop(
+                  context,
+                );
+              },
+              child:
+                  Text('Cancel', style: Theme.of(context).textTheme.bodyText2),
+            ),
+            TextButton(
+                onPressed: () async {
                   setState(() {
                     widget.no_of_available_rooms =
                         widget.no_of_available_rooms -
@@ -51,6 +95,10 @@ class _reservationState extends State<reservation> {
                   //   ),
                   //   (Route<dynamic> route) => false,
                   // );
+                  String formattedDate = DateFormat('yyyy-MM-dd').format(arrivalDate!);
+                  addBooking booking1 = addBooking(formattedDate, int.parse(durationController.text), widget.homestay_id, int.parse(roomsController.text));
+                  bool result = await Bookings(booking1);
+                  print(result);
                   Navigator.pop(
                     context,
                   );
@@ -262,7 +310,7 @@ class _reservationState extends State<reservation> {
                               'Reserve',
                               style: GoogleFonts.lato(fontSize: 20),
                             ),
-                            onPressed: () {
+                            onPressed: () {                              
                               if (_key.currentState!.validate() &&
                                   arrivalDate != null) {
                                 _key.currentState!.save();
