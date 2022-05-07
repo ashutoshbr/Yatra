@@ -18,16 +18,6 @@ def get_users():
     users = cursor.fetchall()
     return users
 
-@router.get("/profile")
-def get_profile(user_id: int = Depends(oauth2.verify_access_token)):
-    cursor.execute(
-        """ SELECT email, username FROM userinfo WHERE id=%s""",
-        (str(user_id),),
-    )
-    user = cursor.fetchone()
-    return user
-
-
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def add_user(user: schemas.AddUser):
@@ -112,13 +102,13 @@ def add_booking(
 ):
     try:
         cursor.execute(
-            """ INSERT INTO booking (user_id, date, no_of_days, homestay_id, no_of_customers) VALUES (%s, %s, %s, %s, %s) RETURNING *""",
+            """ INSERT INTO booking (user_id, date, no_of_days, homestay_id, no_of_rooms) VALUES (%s, %s, %s, %s, %s) RETURNING *""",
             (
                 user_id,
                 booking.date,
                 booking.no_of_days,
                 booking.homestay_id,
-                booking.no_of_customers,
+                booking.no_of_rooms,
             ),
         )
         conn.commit()
@@ -140,7 +130,17 @@ def add_booking(
     yag.send(
         f"{owner_email}",
         subject="Homestay Booked",
-        contents=f"Your homestay has been booked.\n\nDetails:\nUser ID: {user_id}\nDate:{booking.date}\nNo of. Days: {booking.no_of_days}\nNo. of customers: {booking.no_of_customers}",
+        contents=f"Your homestay has been booked.\n\nDetails:\nUser ID: {user_id}\nDate:{booking.date}\nNo of. Days: {booking.no_of_days}\nNo. of rooms: {booking.no_of_rooms}",
     )
 
     return "Homestay booked"
+
+
+@router.get("/profile")
+def get_profile(user_id: int = Depends(oauth2.verify_access_token)):
+    cursor.execute(
+        """ SELECT email, username FROM userinfo WHERE id=%s""",
+        (str(user_id),),
+    )
+    user = cursor.fetchone()
+    return user
