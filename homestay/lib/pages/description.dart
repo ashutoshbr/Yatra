@@ -24,21 +24,20 @@ class descriptionPage extends StatefulWidget {
 }
 
 class _descriptionPageState extends State<descriptionPage> {
-
   Future<bool> postFavourite(AddFavourite favourite) async {
     String jsonFavourite = jsonEncode(favourite);
     final storage = new FlutterSecureStorage();
     var token = await storage.read(key: "token");
     print(token);
     try {
-      var response = await Dio().post('http://10.0.2.2:8000/user/favourite', data: jsonFavourite, options: 
-        Options( headers: {
+      var response = await Dio().post('http://10.0.2.2:8000/user/favourite',
+          data: jsonFavourite,
+          options: Options(headers: {
             'Authorization': "Bearer ${token}",
-      }));
+          }));
       print(response.data);
       return true;
-    }
-    catch (e) {
+    } catch (e) {
       return false;
     }
   }
@@ -130,7 +129,8 @@ class _descriptionPageState extends State<descriptionPage> {
                             IconButton(
                               onPressed: () async {
                                 int homestay_id = widget.descriptionData.id;
-                                AddFavourite add_favourite = AddFavourite(homestay_id: homestay_id);
+                                AddFavourite add_favourite =
+                                    AddFavourite(homestay_id: homestay_id);
                                 bool added = await postFavourite(add_favourite);
                                 if (added) {
                                   _toggleFavourite();
@@ -247,7 +247,7 @@ class _descriptionPageState extends State<descriptionPage> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.fromLTRB(10, 8, 0, 10),
+                            padding: EdgeInsets.fromLTRB(10, 3, 0, 10),
                             child: Text(
                               widget.descriptionData.description,
                               style: TextStyle(
@@ -381,7 +381,7 @@ class _descriptionPageState extends State<descriptionPage> {
                                   'Reserve',
                                   style: GoogleFonts.lato(fontSize: 20),
                                 ),
-                                onPressed: () {                        
+                                onPressed: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

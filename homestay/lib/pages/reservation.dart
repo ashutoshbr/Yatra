@@ -26,8 +26,7 @@ class reservation extends StatefulWidget {
 }
 
 class _reservationState extends State<reservation> {
-
-    Future<bool> Bookings(addBooking booking) async {
+  Future<bool> Bookings(addBooking booking) async {
     String date_ = booking.date.toString();
     // print(DateFormat('yyyy-MM-dd').format(booking.date));
     // var jsonBooking = jsonEncode(booking);
@@ -41,14 +40,14 @@ class _reservationState extends State<reservation> {
     final storage = new FlutterSecureStorage();
     var token = await storage.read(key: "token");
     try {
-      var response = await Dio().post('http://10.0.2.2:8000/user/booking', data: book, options: 
-        Options( headers: {
+      var response = await Dio().post('http://10.0.2.2:8000/user/booking',
+          data: book,
+          options: Options(headers: {
             'Authorization': "Bearer ${token}",
-      }));
-    print(response.data);
-    return true;
-    }
-    catch(e) {
+          }));
+      print(response.data);
+      return true;
+    } catch (e) {
       return false;
     }
   }
@@ -95,8 +94,13 @@ class _reservationState extends State<reservation> {
                   //   ),
                   //   (Route<dynamic> route) => false,
                   // );
-                  String formattedDate = DateFormat('yyyy-MM-dd').format(arrivalDate!);
-                  addBooking booking1 = addBooking(formattedDate, int.parse(durationController.text), widget.homestay_id, int.parse(roomsController.text));
+                  String formattedDate =
+                      DateFormat('yyyy-MM-dd').format(arrivalDate!);
+                  addBooking booking1 = addBooking(
+                      formattedDate,
+                      int.parse(durationController.text),
+                      widget.homestay_id,
+                      int.parse(roomsController.text));
                   bool result = await Bookings(booking1);
                   print(result);
                   Navigator.pop(
@@ -156,11 +160,11 @@ class _reservationState extends State<reservation> {
                 key: _key,
                 child: Column(
                   children: [
-                    Container(
-                      child: Text('Number of available rooms:' +
-                          '  ' +
-                          widget.no_of_available_rooms.toString()),
-                    ),
+                    // Container(
+                    //   child: Text('Number of available rooms:' +
+                    //       '  ' +
+                    //       widget.no_of_available_rooms.toString()),
+                    // ),
                     SizedBox(
                       height: 15,
                     ),
@@ -310,7 +314,7 @@ class _reservationState extends State<reservation> {
                               'Reserve',
                               style: GoogleFonts.lato(fontSize: 20),
                             ),
-                            onPressed: () {                              
+                            onPressed: () {
                               if (_key.currentState!.validate() &&
                                   arrivalDate != null) {
                                 _key.currentState!.save();
