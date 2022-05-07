@@ -18,16 +18,6 @@ def get_users():
     users = cursor.fetchall()
     return users
 
-@router.get("/profile")
-def get_profile(user_id: int = Depends(oauth2.verify_access_token)):
-    cursor.execute(
-        """ SELECT email, username FROM userinfo WHERE user_id=%s""",
-        (str(user_id),),
-    )
-    user = cursor.fetchone()
-    return user
-
-
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def add_user(user: schemas.AddUser):
@@ -144,3 +134,13 @@ def add_booking(
     )
 
     return "Homestay booked"
+
+
+@router.get("/profile")
+def get_profile(user_id: int = Depends(oauth2.verify_access_token)):
+    cursor.execute(
+        """ SELECT email, username FROM userinfo WHERE id=%s""",
+        (str(user_id),),
+    )
+    user = cursor.fetchone()
+    return user
